@@ -49,7 +49,7 @@ if(WIN32)
 endif(WIN32)
  
 if(UNIX)
-	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+	set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake;/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_SAMPLES_INCLUDEPATH
 		/usr/local/share/OGRE/samples/Common/include/
 	)
