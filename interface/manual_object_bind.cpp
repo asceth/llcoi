@@ -1,31 +1,31 @@
 /******************************************************************************
- * light_bind.cpp - bindings for Ogre::Light
+ * manualobject_bind.cpp - bindings for Ogre::ManualObject
  ******************************************************************************
  * This file is part of
- *     __ __              _
+ *     __ __              _ 
  *    / // /_____ ____   (_)
- *   / // // ___// __ \ / /
- *  / // // /__ / /_/ // /
- * /_//_/ \___/ \____//_/
- *
+ *   / // // ___// __ \ / / 
+ *  / // // /__ / /_/ // /  
+ * /_//_/ \___/ \____//_/   
+ *                          
  * Low Level C Ogre Interface (llcoi)
  *
  * See http://code.google.com/p/llcoi/ for more information.
  *
  * Copyright (c) 2011, Llcoi Team
- *
+ * 
  * License: MIT
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,139 +37,87 @@
 #include "ogre_interface.h"
 
 #include <OgreRoot.h>
-#include <OgreLight.h>
+#include <OgreManualObject.h>
 #include "ogre_manager.h"
 
-LightHandle create_light(const char* light_name)
-{
-    Ogre::Light* light = Ogre::Root::getSingletonPtr()->getSceneManager(OgreManager::getSingletonPtr()->get_active_scene_manager_name())->createLight(light_name);
-    return reinterpret_cast<LightHandle>(light);
-}
-
-// Ogre::Light::setPosition(Ogre::Vector3 const&)
-// Ogre::Light::setPosition(float, float, float)
-void light_set_position(LightHandle handle, const float x, const float y, const float z)
-{
-    Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-    light->setPosition(Ogre::Vector3(x, y, z));
-}
-
-// Ogre::Light::setType(Ogre::Light::LightTypes)
-void light_set_type(LightHandle handle, int type)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setType((Ogre::Light::LightTypes)type);
-}
-
-// Ogre::Light::setDiffuseColour(Ogre::ColourValue const&)
-// Ogre::Light::setDiffuseColour(float, float, float)
-void light_set_diffuse_colour(LightHandle handle, const float r, const float g, const float b)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setDiffuseColour(r, g, b);
-}
-
-// Ogre::Light::setSpecularColour(Ogre::ColourValue const&)
-// Ogre::Light::setSpecularColour(float, float, float)
-void light_set_specular_colour(LightHandle handle, const float r, const float g, const float b)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setSpecularColour(r, g, b);
-}
-
-// Ogre::Light::setDirection(Ogre::Vector3 const&)
-// Ogre::Light::setDirection(float, float, float)
-void light_set_direction(LightHandle handle, const float x, const float y, const float z)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setDirection(x, y , z);
-}
-
-// Ogre::Light::setSpotlightRange(Ogre::Radian const&, Ogre::Radian const&, float)
-void light_set_spotlight_range(LightHandle handle, const float inner_angle, const float outer_angle, const float falloff)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setSpotlightRange(Ogre::Degree(inner_angle), Ogre::Degree(outer_angle), falloff);
-}
-
-// Ogre::Light::setPowerScale(float)
-void light_set_power_scale(LightHandle handle, const float power)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setPowerScale(power);
-}
-
-// Ogre::Light::getPowerScale() const
-const float light_get_power_scale(LightHandle handle)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  return light->getPowerScale();
-}
-
-// Ogre::Light::setAttenuation (Real range, Real constant, Real linear, Real quadratic)
-void light_set_attenuation(LightHandle handle, const float range, const float constant, const float linear, const float quadratic)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setAttenuation(range, constant, linear, quadratic);
-}
-
-
 /*
-Ogre::Light::operator=(Ogre::Light const&)
-Ogre::Light::Light(Ogre::Light const&)
-Ogre::Light::_calcTempSquareDist(Ogre::Vector3 const&)
-Ogre::Light::Light()
-Ogre::Light::Light(std::string const&)
-Ogre::Light::~Light()
-Ogre::Light::getType() const
-Ogre::Light::getDiffuseColour() const
-Ogre::Light::getSpecularColour() const
-Ogre::Light::getAttenuationRange() const
-Ogre::Light::getAttenuationConstant() const
-Ogre::Light::getAttenuationLinear() const
-Ogre::Light::getAttenuationQuadric() const
-Ogre::Light::getPosition() const
-Ogre::Light::getDirection() const
-Ogre::Light::getSpotlightInnerAngle() const
-Ogre::Light::getSpotlightOuterAngle() const
-Ogre::Light::getSpotlightFalloff() const
-Ogre::Light::setSpotlightInnerAngle(Ogre::Radian const&)
-Ogre::Light::setSpotlightOuterAngle(Ogre::Radian const&)
-Ogre::Light::setSpotlightFalloff(float)
-Ogre::Light::_notifyAttached(Ogre::Node*, bool)
-Ogre::Light::_notifyMoved()
-Ogre::Light::getBoundingBox() const
-Ogre::Light::_updateRenderQueue(Ogre::RenderQueue*)
-Ogre::Light::getMovableType() const
-Ogre::Light::getDerivedPosition(bool) const
-Ogre::Light::getDerivedDirection() const
-Ogre::Light::setVisible(bool)
-Ogre::Light::getBoundingRadius() const
-Ogre::Light::getAs4DVector(bool) const
-Ogre::Light::_getNearClipVolume(Ogre::Camera const*) const
-Ogre::Light::_getFrustumClipVolumes(Ogre::Camera const*) const
-Ogre::Light::getTypeFlags() const
-Ogre::Light::createAnimableValue(std::string const&)
-Ogre::Light::setCustomShadowCameraSetup(Ogre::SharedPtr<Ogre::ShadowCameraSetup> const&)
-Ogre::Light::resetCustomShadowCameraSetup()
-Ogre::Light::getCustomShadowCameraSetup() const
-Ogre::Light::visitRenderables(Ogre::Renderable::Visitor*, bool)
-Ogre::Light::_getIndexInFrame() const
-Ogre::Light::_notifyIndexInFrame(unsigned int)
-Ogre::Light::setShadowFarDistance(float)
-Ogre::Light::resetShadowFarDistance()
-Ogre::Light::getShadowFarDistance() const
-Ogre::Light::getShadowFarDistanceSquared() const
-Ogre::Light::setShadowNearClipDistance(float)
-Ogre::Light::getShadowNearClipDistance() const
-Ogre::Light::_deriveShadowNearClipDistance(Ogre::Camera const*) const
-Ogre::Light::setShadowFarClipDistance(float)
-Ogre::Light::getShadowFarClipDistance() const
-Ogre::Light::_deriveShadowFarClipDistance(Ogre::Camera const*) const
-Ogre::Light::_setCameraRelative(Ogre::Camera*)
-Ogre::Light::setCustomParameter(unsigned short, Ogre::Vector4 const&)
-Ogre::Light::getCustomParameter(unsigned short) const
-Ogre::Light::_updateCustomGpuParameter(unsigned short, Ogre::GpuProgramParameters::AutoConstantEntry const&, Ogre::GpuProgramParameters*) const
+Ogre::ManualObject::ManualObjectSection
+Ogre::ManualObject::ManualObjectSectionShadowRenderable
+Ogre::ManualObject::operator=(Ogre::ManualObject const&)
+Ogre::ManualObject::ManualObject(Ogre::ManualObject const&)
+Ogre::ManualObject::ManualObject(std::string const&)
+Ogre::ManualObject::~ManualObject()
+Ogre::ManualObject::clear()
+Ogre::ManualObject::estimateVertexCount(unsigned int)
+Ogre::ManualObject::estimateIndexCount(unsigned int)
+Ogre::ManualObject::begin(std::string const&, Ogre::RenderOperation::OperationType, std::string const&)
+Ogre::ManualObject::setDynamic(bool)
+Ogre::ManualObject::getDynamic() const
+Ogre::ManualObject::beginUpdate(unsigned int)
+Ogre::ManualObject::position(Ogre::Vector3 const&)
+Ogre::ManualObject::position(float, float, float)
+Ogre::ManualObject::normal(Ogre::Vector3 const&)
+Ogre::ManualObject::normal(float, float, float)
+Ogre::ManualObject::tangent(Ogre::Vector3 const&)
+Ogre::ManualObject::tangent(float, float, float)
+Ogre::ManualObject::textureCoord(float)
+Ogre::ManualObject::textureCoord(float, float)
+Ogre::ManualObject::textureCoord(float, float, float)
+Ogre::ManualObject::textureCoord(float, float, float, float)
+Ogre::ManualObject::textureCoord(Ogre::Vector2 const&)
+Ogre::ManualObject::textureCoord(Ogre::Vector3 const&)
+Ogre::ManualObject::textureCoord(Ogre::Vector4 const&)
+Ogre::ManualObject::colour(Ogre::ColourValue const&)
+Ogre::ManualObject::colour(float, float, float, float)
+Ogre::ManualObject::index(unsigned int)
+Ogre::ManualObject::triangle(unsigned int, unsigned int, unsigned int)
+Ogre::ManualObject::quad(unsigned int, unsigned int, unsigned int, unsigned int)
+Ogre::ManualObject::end()
+Ogre::ManualObject::setMaterialName(unsigned int, std::string const&, std::string const&)
+Ogre::ManualObject::convertToMesh(std::string const&, std::string const&)
+Ogre::ManualObject::setUseIdentityProjection(bool)
+Ogre::ManualObject::getUseIdentityProjection() const
+Ogre::ManualObject::setUseIdentityView(bool)
+Ogre::ManualObject::getUseIdentityView() const
+Ogre::ManualObject::setBoundingBox(Ogre::AxisAlignedBox const&)
+Ogre::ManualObject::getSection(unsigned int) const
+Ogre::ManualObject::getNumSections() const
+Ogre::ManualObject::setKeepDeclarationOrder(bool)
+Ogre::ManualObject::getKeepDeclarationOrder() const
+Ogre::ManualObject::getMovableType() const
+Ogre::ManualObject::getBoundingBox() const
+Ogre::ManualObject::getBoundingRadius() const
+Ogre::ManualObject::_updateRenderQueue(Ogre::RenderQueue*)
+Ogre::ManualObject::getEdgeList()
+Ogre::ManualObject::hasEdgeList()
+Ogre::ManualObject::getShadowVolumeRenderableIterator(Ogre::ShadowTechnique, Ogre::Light const*, Ogre::HardwareIndexBufferSharedPtr*, bool, float, unsigned long)
+Ogre::ManualObject::visitRenderables(Ogre::Renderable::Visitor*, bool)
+Ogre::ManualObject::ManualObjectSection::operator=(Ogre::ManualObject::ManualObjectSection const&)
+Ogre::ManualObject::ManualObjectSection::ManualObjectSection(Ogre::ManualObject::ManualObjectSection const&)
+Ogre::ManualObject::ManualObjectSection::ManualObjectSection(Ogre::ManualObject*, std::string const&, Ogre::RenderOperation::OperationType, std::string const&)
+Ogre::ManualObject::ManualObjectSection::~ManualObjectSection()
+Ogre::ManualObject::ManualObjectSection::getRenderOperation()
+Ogre::ManualObject::ManualObjectSection::getMaterialName() const
+Ogre::ManualObject::ManualObjectSection::getMaterialGroup() const
+Ogre::ManualObject::ManualObjectSection::setMaterialName(std::string const&, std::string const&)
+Ogre::ManualObject::ManualObjectSection::set32BitIndices(bool)
+Ogre::ManualObject::ManualObjectSection::get32BitIndices() const
+Ogre::ManualObject::ManualObjectSection::getMaterial() const
+Ogre::ManualObject::ManualObjectSection::getRenderOperation(Ogre::RenderOperation&)
+Ogre::ManualObject::ManualObjectSection::getWorldTransforms(Ogre::Matrix4*) const
+Ogre::ManualObject::ManualObjectSection::getSquaredViewDepth(Ogre::Camera const*) const
+Ogre::ManualObject::ManualObjectSection::getLights() const
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::operator=(Ogre::ManualObject::ManualObjectSectionShadowRenderable const&)
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::ManualObjectSectionShadowRenderable(Ogre::ManualObject::ManualObjectSectionShadowRenderable const&)
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::ManualObjectSectionShadowRenderable(Ogre::ManualObject*, Ogre::HardwareIndexBufferSharedPtr*, Ogre::VertexData const*, bool, bool)
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::~ManualObjectSectionShadowRenderable()
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::getWorldTransforms(Ogre::Matrix4*) const
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::getPositionBuffer()
+Ogre::ManualObject::ManualObjectSectionShadowRenderable::getWBuffer()
+Ogre::ManualObject::TempVertex::~TempVertex()
+Ogre::ManualObject::TempVertex::operator=(Ogre::ManualObject::TempVertex const&)
+Ogre::ManualObject::TempVertex::TempVertex(Ogre::ManualObject::TempVertex const&)
+Ogre::ManualObject::TempVertex::TempVertex()
 */
 /*
 Ogre::MovableObject::Listener

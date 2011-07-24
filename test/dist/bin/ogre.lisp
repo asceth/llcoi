@@ -693,6 +693,44 @@
 
 (cl:export '#.(swig-lispify "remove_window_listener" 'function))
 
+(cffi:defcfun ("create_plane" #.(swig-lispify "create_plane" 'function)) :pointer
+  (a :float)
+  (b :float)
+  (c :float)
+  (d :float))
+
+(cl:export '#.(swig-lispify "create_plane" 'function))
+
+(cffi:defcfun ("create_plane_from_normal" #.(swig-lispify "create_plane_from_normal" 'function)) :pointer
+  (normal_x :float)
+  (normal_y :float)
+  (normal_z :float)
+  (offset :float))
+
+(cl:export '#.(swig-lispify "create_plane_from_normal" 'function))
+
+(cffi:defcfun ("mesh_manager_get" #.(swig-lispify "mesh_manager_get" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "mesh_manager_get" 'function))
+
+(cffi:defcfun ("mesh_manager_create_plane" #.(swig-lispify "mesh_manager_create_plane" 'function)) :pointer
+  (name :string)
+  (group_name :string)
+  (plane :pointer)
+  (width :float)
+  (height :float)
+  (xsegments :int)
+  (ysegments :int)
+  (normals :int)
+  (num_tex_coord_sets :unsigned-short)
+  (u_tile :float)
+  (v_tile :float)
+  (upvector_x :float)
+  (upvector_y :float)
+  (upvector_z :float))
+
+(cl:export '#.(swig-lispify "mesh_manager_create_plane" 'function))
+
 (cffi:defcstruct #.(swig-lispify "InputSystemHandle__" 'classname)
 	(#.(swig-lispify "unused" 'slotname) :int))
 

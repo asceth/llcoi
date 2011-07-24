@@ -1,5 +1,5 @@
 /******************************************************************************
- * light_bind.cpp - bindings for Ogre::Light
+ * movable_object_bind.cpp - bindings for Ogre::MovableObject
  ******************************************************************************
  * This file is part of
  *     __ __              _
@@ -37,140 +37,15 @@
 #include "ogre_interface.h"
 
 #include <OgreRoot.h>
-#include <OgreLight.h>
+#include <OgreMovableObject.h>
 #include "ogre_manager.h"
 
-LightHandle create_light(const char* light_name)
+void movable_object_set_cast_shadows(MovableObjectHandle handle, int cast_shadows)
 {
-    Ogre::Light* light = Ogre::Root::getSingletonPtr()->getSceneManager(OgreManager::getSingletonPtr()->get_active_scene_manager_name())->createLight(light_name);
-    return reinterpret_cast<LightHandle>(light);
+  Ogre::MovableObject* movable_object = reinterpret_cast<Ogre::MovableObject*>(handle);
+  movable_object->setCastShadows(cast_shadows);
 }
 
-// Ogre::Light::setPosition(Ogre::Vector3 const&)
-// Ogre::Light::setPosition(float, float, float)
-void light_set_position(LightHandle handle, const float x, const float y, const float z)
-{
-    Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-    light->setPosition(Ogre::Vector3(x, y, z));
-}
-
-// Ogre::Light::setType(Ogre::Light::LightTypes)
-void light_set_type(LightHandle handle, int type)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setType((Ogre::Light::LightTypes)type);
-}
-
-// Ogre::Light::setDiffuseColour(Ogre::ColourValue const&)
-// Ogre::Light::setDiffuseColour(float, float, float)
-void light_set_diffuse_colour(LightHandle handle, const float r, const float g, const float b)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setDiffuseColour(r, g, b);
-}
-
-// Ogre::Light::setSpecularColour(Ogre::ColourValue const&)
-// Ogre::Light::setSpecularColour(float, float, float)
-void light_set_specular_colour(LightHandle handle, const float r, const float g, const float b)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setSpecularColour(r, g, b);
-}
-
-// Ogre::Light::setDirection(Ogre::Vector3 const&)
-// Ogre::Light::setDirection(float, float, float)
-void light_set_direction(LightHandle handle, const float x, const float y, const float z)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setDirection(x, y , z);
-}
-
-// Ogre::Light::setSpotlightRange(Ogre::Radian const&, Ogre::Radian const&, float)
-void light_set_spotlight_range(LightHandle handle, const float inner_angle, const float outer_angle, const float falloff)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setSpotlightRange(Ogre::Degree(inner_angle), Ogre::Degree(outer_angle), falloff);
-}
-
-// Ogre::Light::setPowerScale(float)
-void light_set_power_scale(LightHandle handle, const float power)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setPowerScale(power);
-}
-
-// Ogre::Light::getPowerScale() const
-const float light_get_power_scale(LightHandle handle)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  return light->getPowerScale();
-}
-
-// Ogre::Light::setAttenuation (Real range, Real constant, Real linear, Real quadratic)
-void light_set_attenuation(LightHandle handle, const float range, const float constant, const float linear, const float quadratic)
-{
-  Ogre::Light* light = reinterpret_cast<Ogre::Light*>(handle);
-  light->setAttenuation(range, constant, linear, quadratic);
-}
-
-
-/*
-Ogre::Light::operator=(Ogre::Light const&)
-Ogre::Light::Light(Ogre::Light const&)
-Ogre::Light::_calcTempSquareDist(Ogre::Vector3 const&)
-Ogre::Light::Light()
-Ogre::Light::Light(std::string const&)
-Ogre::Light::~Light()
-Ogre::Light::getType() const
-Ogre::Light::getDiffuseColour() const
-Ogre::Light::getSpecularColour() const
-Ogre::Light::getAttenuationRange() const
-Ogre::Light::getAttenuationConstant() const
-Ogre::Light::getAttenuationLinear() const
-Ogre::Light::getAttenuationQuadric() const
-Ogre::Light::getPosition() const
-Ogre::Light::getDirection() const
-Ogre::Light::getSpotlightInnerAngle() const
-Ogre::Light::getSpotlightOuterAngle() const
-Ogre::Light::getSpotlightFalloff() const
-Ogre::Light::setSpotlightInnerAngle(Ogre::Radian const&)
-Ogre::Light::setSpotlightOuterAngle(Ogre::Radian const&)
-Ogre::Light::setSpotlightFalloff(float)
-Ogre::Light::_notifyAttached(Ogre::Node*, bool)
-Ogre::Light::_notifyMoved()
-Ogre::Light::getBoundingBox() const
-Ogre::Light::_updateRenderQueue(Ogre::RenderQueue*)
-Ogre::Light::getMovableType() const
-Ogre::Light::getDerivedPosition(bool) const
-Ogre::Light::getDerivedDirection() const
-Ogre::Light::setVisible(bool)
-Ogre::Light::getBoundingRadius() const
-Ogre::Light::getAs4DVector(bool) const
-Ogre::Light::_getNearClipVolume(Ogre::Camera const*) const
-Ogre::Light::_getFrustumClipVolumes(Ogre::Camera const*) const
-Ogre::Light::getTypeFlags() const
-Ogre::Light::createAnimableValue(std::string const&)
-Ogre::Light::setCustomShadowCameraSetup(Ogre::SharedPtr<Ogre::ShadowCameraSetup> const&)
-Ogre::Light::resetCustomShadowCameraSetup()
-Ogre::Light::getCustomShadowCameraSetup() const
-Ogre::Light::visitRenderables(Ogre::Renderable::Visitor*, bool)
-Ogre::Light::_getIndexInFrame() const
-Ogre::Light::_notifyIndexInFrame(unsigned int)
-Ogre::Light::setShadowFarDistance(float)
-Ogre::Light::resetShadowFarDistance()
-Ogre::Light::getShadowFarDistance() const
-Ogre::Light::getShadowFarDistanceSquared() const
-Ogre::Light::setShadowNearClipDistance(float)
-Ogre::Light::getShadowNearClipDistance() const
-Ogre::Light::_deriveShadowNearClipDistance(Ogre::Camera const*) const
-Ogre::Light::setShadowFarClipDistance(float)
-Ogre::Light::getShadowFarClipDistance() const
-Ogre::Light::_deriveShadowFarClipDistance(Ogre::Camera const*) const
-Ogre::Light::_setCameraRelative(Ogre::Camera*)
-Ogre::Light::setCustomParameter(unsigned short, Ogre::Vector4 const&)
-Ogre::Light::getCustomParameter(unsigned short) const
-Ogre::Light::_updateCustomGpuParameter(unsigned short, Ogre::GpuProgramParameters::AutoConstantEntry const&, Ogre::GpuProgramParameters*) const
-*/
 /*
 Ogre::MovableObject::Listener
 Ogre::MovableObject::operator=(Ogre::MovableObject const&)
@@ -234,7 +109,6 @@ Ogre::MovableObject::hasEdgeList()
 Ogre::MovableObject::getShadowVolumeRenderableIterator(Ogre::ShadowTechnique, Ogre::Light const*, Ogre::HardwareIndexBufferSharedPtr*, bool, float, unsigned long)
 Ogre::MovableObject::getLightCapBounds() const
 Ogre::MovableObject::getDarkCapBounds(Ogre::Light const&, float) const
-Ogre::MovableObject::setCastShadows(bool)
 Ogre::MovableObject::getCastShadows() const
 Ogre::MovableObject::getReceivesShadows()
 Ogre::MovableObject::getPointExtrusionDistance(Ogre::Light const*) const

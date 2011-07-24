@@ -2,30 +2,30 @@
 # * CMakeLists.txt - llcoi CMake script
 # ******************************************************************************
 # * This file is part of
-# *     __ __              _ 
+# *     __ __              _
 # *    / // /_____ ____   (_)
-# *   / // // ___// __ \ / / 
-# *  / // // /__ / /_/ // /  
-# * /_//_/ \___/ \____//_/   
-# *                          
+# *   / // // ___// __ \ / /
+# *  / // // /__ / /_/ // /
+# * /_//_/ \___/ \____//_/
+# *
 # * Low Level C Ogre Interface (llcoi)
 # *
 # * See http://code.google.com/p/llcoi/ for more information.
 # *
 # * Copyright (c) 2011, Llcoi Team
-# * 
+# *
 # * License: MIT
-# * 
+# *
 # * Permission is hereby granted, free of charge, to any person obtaining a copy
 # * of this software and associated documentation files (the "Software"), to deal
 # * in the Software without restriction, including without limitation the rights
 # * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # * copies of the Software, and to permit persons to whom the Software is
 # * furnished to do so, subject to the following conditions:
-# * 
+# *
 # * The above copyright notice and this permission notice shall be included in
 # * all copies or substantial portions of the Software.
-# * 
+# *
 # * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,9 +35,9 @@
 # * THE SOFTWARE.
 # ******************************************************************************/
 cmake_minimum_required(VERSION 2.8)
- 
+
 project(llcoi)
- 
+
 set(OGREINTERFACE_VERSION_STRING "0.2.6")
 set(abi_version ${OGREINTERFACE_VERSION_STRING})
 
@@ -47,22 +47,22 @@ if(WIN32)
 		$ENV{OGRE_HOME}/Samples/include
 	)
 endif(WIN32)
- 
+
 if(UNIX)
 	set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake;/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_SAMPLES_INCLUDEPATH
 		/usr/local/share/OGRE/samples/Common/include/
 	)
 endif(UNIX)
- 
+
 if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
- 
+
 set(CMAKE_DEBUG_POSTFIX "_d")
- 
+
 find_package(OGRE REQUIRED)
 find_package(OIS REQUIRED)
 
@@ -90,13 +90,13 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 		find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
 	endif()
 	find_package(Boost QUIET)
- 
+
 	# Set up referencing of Boost
 	include_directories(${Boost_INCLUDE_DIR})
 	add_definitions(-DBOOST_ALL_NO_LIB)
 	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
 endif()
- 
+
 set(HDRS
 	./ogre_interface.h
 	./ois_interface.h
@@ -108,31 +108,34 @@ set(SRCS
 	./ois_bind.cpp
 	./root_bind.cpp
 	./entity_bind.cpp
-	./scenemanager_bind.cpp
-	./scenenode_bind.cpp
+	./scene_manager_bind.cpp
+	./scene_node_bind.cpp
 	./camera_bind.cpp
-	./resourcegroupmanager_bind.cpp
-	./renderwindow_bind.cpp
-	./rendersystem_bind.cpp
+	./resource_group_manager_bind.cpp
+	./render_window_bind.cpp
+	./render_system_bind.cpp
 	./light_bind.cpp
-	./framelistener_bind.cpp
+	./frame_listener_bind.cpp
 	./viewport_bind.cpp
-	./movableobject_bind.cpp
-	./windoweventlistener_bind.cpp
-	./manualobject_bind.cpp
+	./movable_object_bind.cpp
+	./window_event_listener_bind.cpp
+	./manual_object_bind.cpp
+  ./plane_bind.cpp
+  ./mesh_manager_bind.cpp
+  ./movable_object_bind.cpp
 )
- 
+
 include_directories(${OGRE_INCLUDE_DIRS} ${OIS_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
- 
+
 if(${LLCOI_DYNAMIC_BUILD})
     add_library(llcoi SHARED ${HDRS} ${SRCS})
-    set_target_properties(llcoi PROPERTIES 
+    set_target_properties(llcoi PROPERTIES
         COMPILE_DEFINITIONS LLCOI_BUILD_DYNAMIC)
 else()
     add_library(llcoi STATIC ${HDRS} ${SRCS})
-    set_target_properties(llcoi PROPERTIES 
+    set_target_properties(llcoi PROPERTIES
         COMPILE_DEFINITIONS LLCOI_BUILD_STATIC)
 endif()
 

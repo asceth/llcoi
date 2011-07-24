@@ -93,6 +93,7 @@
 #define EVENT_FRAME_RENDERING_QUEUED 2
 #define EVENT_FRAME_ENDED 4
 
+#include "enums.h"
 
 #define COI_DECLARE_HANDLE(name) struct name##__ { int unused; }; typedef struct name##__ *name
 
@@ -107,6 +108,7 @@
 // COI_DECLARE_HANDLE(ViewportHandle);
 
 #define CameraHandle void*
+#define MovableObjectHandle void*
 #define EntityHandle void*
 #define SceneNodeHandle void*
 #define LightHandle void*
@@ -115,6 +117,9 @@
 #define RenderSystemHandle void*
 #define SceneManagerHandle void*
 #define ViewportHandle void*
+#define PlaneHandle void*
+#define MeshManagerHandle void*
+#define MeshPtrHandle void*
 
 
 // listener typedefs
@@ -220,6 +225,8 @@ DLL void set_default_num_mipmaps(int number);
 DLL void set_ambient_light_rgba(const float r, const float g, const float b, const float a);
 
 DLL void set_ambient_light_rgb(const float r, const float g, const float b);
+
+DLL void scene_manager_set_shadow_technique(const int technique);
 
 DLL ViewportHandle add_viewport(CameraHandle camera_handle);
 
@@ -334,11 +341,26 @@ DLL void camera_lookat(CameraHandle camera_handle, const float x, const float y,
 // Entity
 DLL EntityHandle create_entity(const char* entity_name, const char* mesh_file);
 
+DLL void entity_set_material_name(EntityHandle handle, const char* name, const char* group_name);
 
 // Light
 DLL LightHandle create_light(const char* light_name);
 
-DLL void light_set_position(LightHandle light_handle, const float x, const float y, const float z);
+DLL void light_set_position(LightHandle handle, const float x, const float y, const float z);
+
+DLL void light_set_diffuse_colour(LightHandle handle, const float r, const float g, const float b);
+
+DLL void light_set_specular_colour(LightHandle handle, const float r, const float g, const float b);
+
+DLL void light_set_direction(LightHandle handle, const float x, const float y, const float z);
+
+DLL void light_set_spotlight_range(LightHandle handle, const float inner_angle, const float outer_angle, const float falloff);
+
+DLL void light_set_power_scale(LightHandle handle, const float power);
+
+DLL const float light_get_power_scale(LightHandle handle);
+
+DLL void light_set_attenuation(LightHandle handle, const float range, const float constant, const float linear, const float quadratic);
 
 
 // FrameListener
@@ -350,3 +372,18 @@ DLL void remove_frame_listener(FrameListenerEvent frame_event);
 DLL void add_window_listener(RenderWindowHandle window_handle, WindowListenerEvent window_event);
 
 DLL void remove_window_listener(RenderWindowHandle window_handle);
+
+
+// Plane
+DLL PlaneHandle create_plane(coiReal a, coiReal b, coiReal c, coiReal d);
+DLL PlaneHandle create_plane_from_normal(coiReal normal_x, coiReal normal_y, coiReal normal_z, coiReal offset);
+
+
+// MeshManager
+DLL MeshManagerHandle mesh_manager_get();
+DLL void  mesh_manager_create_plane(const char* name, const char* group_name, PlaneHandle plane, coiReal width, coiReal height, int xsegments, int ysegments, int normals, unsigned short num_tex_coord_sets, coiReal u_tile, coiReal v_tile, coiReal upvector_x, coiReal upvector_y, coiReal upvector_z);
+
+
+// MovableObject
+DLL void movable_object_set_cast_shadows(MovableObjectHandle handle, int cast_shadows);
+

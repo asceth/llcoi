@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     unsigned int scrn;
 #endif
 #endif //LLCOI_TEST_USE_OPENINPUT
-    
+
     int keep_going = 1;
 
     create_root("plugins.cfg", "ogre.cfg", "ogre.log");
@@ -102,6 +102,12 @@ int main(int argc, char *argv[])
 
     camera_set_aspect_ratio(myCamera, 800, 600);
 
+    PlaneHandle plane = create_plane_from_normal(0, 1, 0, 0);
+    mesh_manager_create_plane("ground", "General", plane, 1500, 1500, 20, 20, 1, 1, 5, 5, 0, 0, 1);
+    EntityHandle plane_entity = create_entity("plane", "ground");
+    SceneNodeHandle plane_node = create_child_scenenode("planenode");
+    attach_entity_to_scenenode(plane_entity, plane_node);
+
     entity = create_entity("OgreHead", "ogrehead.mesh");
 
     node = create_child_scenenode("headNode");
@@ -121,7 +127,7 @@ int main(int argc, char *argv[])
     create_input_system(render_window_get_hwnd(renderwindow));
     keyboard = create_keyboard_object(0);
     mouse = create_mouse_object(0);
-    
+
     while(keep_going)
     {
         keyboard_capture(keyboard);
@@ -129,7 +135,7 @@ int main(int argc, char *argv[])
 
         if(keyboard_is_key_down(keyboard, KC_ESCAPE))
             keep_going = 0;
-        
+
         // Pump window messages for nice behaviour
         pump_messages();
         // Render a frame
@@ -139,9 +145,9 @@ int main(int argc, char *argv[])
         {
             keep_going = 0;
         }
-        
+
     }
-    
+
 #if defined(LLCOI_TEST_USE_OPENINPUT)
     windowHnd = render_window_get_hwnd(renderwindow);
 
@@ -152,13 +158,13 @@ int main(int argc, char *argv[])
 #else
     sprintf(openinput_window_params, "c:%u s:%u w:%u", 0, 0, windowHnd);
 #endif
-    
+
     oi_init(openinput_window_params, 0);
-    
+
     log_message("***************************");
     log_message("*** All Systems online! ***");
     log_message("***************************");
-    
+
     //render_loop();
     while (keep_going)
     {
@@ -194,7 +200,7 @@ int main(int argc, char *argv[])
 
     oi_close();
 #endif //LLCOI_TEST_USE_OPENINPUT
-    
+
 	remove_window_listener(renderwindow);
 
     destroy_keyboard_object(keyboard);
