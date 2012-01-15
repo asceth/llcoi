@@ -73,6 +73,36 @@
 #+sbcl(sb-ext::set-floating-point-modes :traps nil)
 
 
+(cffi:defcenum #.(swig-lispify "LightTypes" 'enumname)
+	#.(swig-lispify "LT_POINT" 'enumvalue :keyword)
+	#.(swig-lispify "LT_DIRECTIONAL" 'enumvalue :keyword)
+	#.(swig-lispify "LT_SPOTLIGHT" 'enumvalue :keyword))
+
+(cl:export '#.(swig-lispify "LightTypes" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "ShadowTechnique" 'enumname)
+	(#.(swig-lispify "SHADOWTYPE_NONE" 'enumvalue :keyword) #.#x00)
+	(#.(swig-lispify "SHADOWDETAILTYPE_ADDITIVE" 'enumvalue :keyword) #.#x01)
+	(#.(swig-lispify "SHADOWDETAILTYPE_MODULATIVE" 'enumvalue :keyword) #.#x02)
+	(#.(swig-lispify "SHADOWDETAILTYPE_INTEGRATED" 'enumvalue :keyword) #.#x04)
+	(#.(swig-lispify "SHADOWDETAILTYPE_STENCIL" 'enumvalue :keyword) #.#x10)
+	(#.(swig-lispify "SHADOWDETAILTYPE_TEXTURE" 'enumvalue :keyword) #.#x20)
+	(#.(swig-lispify "SHADOWTYPE_STENCIL_MODULATIVE" 'enumvalue :keyword) #.#x12)
+	(#.(swig-lispify "SHADOWTYPE_STENCIL_ADDITIVE" 'enumvalue :keyword) #.#x11)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE" 'enumvalue :keyword) #.#x22)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE" 'enumvalue :keyword) #.#x21)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED" 'enumvalue :keyword) #.#x25)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED" 'enumvalue :keyword) #.#x26))
+
+(cl:export '#.(swig-lispify "ShadowTechnique" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "OgreTerrainAlignment" 'enumname)
+	(#.(swig-lispify "ALIGN_X_Z" 'enumvalue :keyword) #.0)
+	(#.(swig-lispify "ALIGN_X_Y" 'enumvalue :keyword) #.1)
+	(#.(swig-lispify "ALIGN_Y_Z" 'enumvalue :keyword) #.2))
+
+(cl:export '#.(swig-lispify "OgreTerrainAlignment" 'enumname))
+
 (cl:defconstant #.(swig-lispify "EVENT_FRAME_STARTED" 'constant) 1)
 
 (cl:export '#.(swig-lispify "EVENT_FRAME_STARTED" 'constant))
@@ -139,182 +169,6 @@
 
 (cl:export '#.(swig-lispify "auto_window" 'slotname))
 
-(cffi:defcfun ("release_engine" #.(swig-lispify "release_engine" 'function)) :void)
-
-(cl:export '#.(swig-lispify "release_engine" 'function))
-
-(cffi:defcfun ("default_engine_options" #.(swig-lispify "default_engine_options" 'function)) :void
-  (options :pointer))
-
-(cl:export '#.(swig-lispify "default_engine_options" 'function))
-
-(cffi:defcfun ("init_engine" #.(swig-lispify "init_engine" 'function)) :void
-  (options #.(swig-lispify "engine_options" 'classname)))
-
-(cl:export '#.(swig-lispify "init_engine" 'function))
-
-(cffi:defcfun ("create_root" #.(swig-lispify "create_root" 'function)) :pointer
-  (pluginFileName :string)
-  (configFileName :string)
-  (logFileName :string))
-
-(cl:export '#.(swig-lispify "create_root" 'function))
-
-(cffi:defcfun ("root_initialise" #.(swig-lispify "root_initialise" 'function)) :pointer
-  (auto_create_window :int)
-  (render_window_title :string))
-
-(cl:export '#.(swig-lispify "root_initialise" 'function))
-
-(cffi:defcfun ("create_render_window" #.(swig-lispify "create_render_window" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int))
-
-(cl:export '#.(swig-lispify "create_render_window" 'function))
-
-(cffi:defcfun ("create_render_window_gl_context" #.(swig-lispify "create_render_window_gl_context" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int))
-
-(cl:export '#.(swig-lispify "create_render_window_gl_context" 'function))
-
-(cffi:defcfun ("create_render_window_hwnd" #.(swig-lispify "create_render_window_hwnd" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int)
-  (hwnd :unsigned-long))
-
-(cl:export '#.(swig-lispify "create_render_window_hwnd" 'function))
-
-(cffi:defcfun ("render_window_get_hwnd" #.(swig-lispify "render_window_get_hwnd" 'function)) :unsigned-int
-  (window_handle :pointer))
-
-(cl:export '#.(swig-lispify "render_window_get_hwnd" 'function))
-
-(cffi:defcfun ("render_window_set_visible" #.(swig-lispify "render_window_set_visible" 'function)) :void
-  (window_handle :pointer)
-  (visible :int))
-
-(cl:export '#.(swig-lispify "render_window_set_visible" 'function))
-
-(cffi:defcfun ("render_window_update" #.(swig-lispify "render_window_update" 'function)) :void
-  (window_handle :pointer)
-  (swap_buffers :int))
-
-(cl:export '#.(swig-lispify "render_window_update" 'function))
-
-(cffi:defcfun ("current_window_update" #.(swig-lispify "current_window_update" 'function)) :void
-  (swap_buffers :int))
-
-(cl:export '#.(swig-lispify "current_window_update" 'function))
-
-(cffi:defcfun ("render_window_resize" #.(swig-lispify "render_window_resize" 'function)) :void
-  (width :unsigned-int)
-  (height :unsigned-int))
-
-(cl:export '#.(swig-lispify "render_window_resize" 'function))
-
-(cffi:defcfun ("render_window_moved_or_resized" #.(swig-lispify "render_window_moved_or_resized" 'function)) :void)
-
-(cl:export '#.(swig-lispify "render_window_moved_or_resized" 'function))
-
-(cffi:defcfun ("render_window_closed" #.(swig-lispify "render_window_closed" 'function)) :int)
-
-(cl:export '#.(swig-lispify "render_window_closed" 'function))
-
-(cffi:defcfun ("root_is_initialised" #.(swig-lispify "root_is_initialised" 'function)) :int)
-
-(cl:export '#.(swig-lispify "root_is_initialised" 'function))
-
-(cffi:defcfun ("save_config" #.(swig-lispify "save_config" 'function)) :void)
-
-(cl:export '#.(swig-lispify "save_config" 'function))
-
-(cffi:defcfun ("restore_config" #.(swig-lispify "restore_config" 'function)) :int)
-
-(cl:export '#.(swig-lispify "restore_config" 'function))
-
-(cffi:defcfun ("show_config_dialog" #.(swig-lispify "show_config_dialog" 'function)) :int)
-
-(cl:export '#.(swig-lispify "show_config_dialog" 'function))
-
-(cffi:defcfun ("add_render_system" #.(swig-lispify "add_render_system" 'function)) :void
-  (render_system :pointer))
-
-(cl:export '#.(swig-lispify "add_render_system" 'function))
-
-(cffi:defcfun ("set_render_system" #.(swig-lispify "set_render_system" 'function)) :void
-  (render_system :pointer))
-
-(cl:export '#.(swig-lispify "set_render_system" 'function))
-
-(cffi:defcfun ("get_render_system" #.(swig-lispify "get_render_system" 'function)) :pointer)
-
-(cl:export '#.(swig-lispify "get_render_system" 'function))
-
-(cffi:defcfun ("get_render_system_by_name" #.(swig-lispify "get_render_system_by_name" 'function)) :pointer
-  (render_system_name :string))
-
-(cl:export '#.(swig-lispify "get_render_system_by_name" 'function))
-
-(cffi:defcfun ("load_ogre_plugin" #.(swig-lispify "load_ogre_plugin" 'function)) :void
-  (plugin :string))
-
-(cl:export '#.(swig-lispify "load_ogre_plugin" 'function))
-
-(cffi:defcfun ("create_scene_manager" #.(swig-lispify "create_scene_manager" 'function)) :pointer
-  (type_name :string)
-  (instance_name :string))
-
-(cl:export '#.(swig-lispify "create_scene_manager" 'function))
-
-(cffi:defcfun ("get_scene_manager" #.(swig-lispify "get_scene_manager" 'function)) :pointer)
-
-(cl:export '#.(swig-lispify "get_scene_manager" 'function))
-
-(cffi:defcfun ("get_scene_manager_by_name" #.(swig-lispify "get_scene_manager_by_name" 'function)) :pointer
-  (scene_manager_instance_name :string))
-
-(cl:export '#.(swig-lispify "get_scene_manager_by_name" 'function))
-
-(cffi:defcfun ("render_one_frame" #.(swig-lispify "render_one_frame" 'function)) :int)
-
-(cl:export '#.(swig-lispify "render_one_frame" 'function))
-
-(cffi:defcfun ("render_one_frame_ex" #.(swig-lispify "render_one_frame_ex" 'function)) :int
-  (time_since_last_frame :float))
-
-(cl:export '#.(swig-lispify "render_one_frame_ex" 'function))
-
-(cffi:defcfun ("render_loop_once" #.(swig-lispify "render_loop_once" 'function)) :int)
-
-(cl:export '#.(swig-lispify "render_loop_once" 'function))
-
-(cffi:defcfun ("render_loop" #.(swig-lispify "render_loop" 'function)) :void)
-
-(cl:export '#.(swig-lispify "render_loop" 'function))
-
-(cffi:defcfun ("pump_messages" #.(swig-lispify "pump_messages" 'function)) :void)
-
-(cl:export '#.(swig-lispify "pump_messages" 'function))
-
-(cffi:defcfun ("render_system_set_config_option" #.(swig-lispify "render_system_set_config_option" 'function)) :void
-  (render_system_handle :pointer)
-  (option :string)
-  (value :string))
-
-(cl:export '#.(swig-lispify "render_system_set_config_option" 'function))
-
-(cffi:defcfun ("log_message" #.(swig-lispify "log_message" 'function)) :void
-  (message :string))
-
-(cl:export '#.(swig-lispify "log_message" 'function))
-
 (cffi:defcfun ("set_default_num_mipmaps" #.(swig-lispify "set_default_num_mipmaps" 'function)) :void
   (number :int))
 
@@ -334,6 +188,11 @@
   (b :float))
 
 (cl:export '#.(swig-lispify "set_ambient_light_rgb" 'function))
+
+(cffi:defcfun ("scene_manager_set_shadow_technique" #.(swig-lispify "scene_manager_set_shadow_technique" 'function)) :void
+  (technique :int))
+
+(cl:export '#.(swig-lispify "scene_manager_set_shadow_technique" 'function))
 
 (cffi:defcfun ("add_viewport" #.(swig-lispify "add_viewport" 'function)) :pointer
   (camera_handle :pointer))
@@ -658,18 +517,77 @@
 
 (cl:export '#.(swig-lispify "create_entity" 'function))
 
+(cffi:defcfun ("entity_set_material_name" #.(swig-lispify "entity_set_material_name" 'function)) :void
+  (handle :pointer)
+  (name :string)
+  (group_name :string))
+
+(cl:export '#.(swig-lispify "entity_set_material_name" 'function))
+
 (cffi:defcfun ("create_light" #.(swig-lispify "create_light" 'function)) :pointer
   (light_name :string))
 
 (cl:export '#.(swig-lispify "create_light" 'function))
 
 (cffi:defcfun ("light_set_position" #.(swig-lispify "light_set_position" 'function)) :void
-  (light_handle :pointer)
+  (handle :pointer)
   (x :float)
   (y :float)
   (z :float))
 
 (cl:export '#.(swig-lispify "light_set_position" 'function))
+
+(cffi:defcfun ("light_set_diffuse_colour" #.(swig-lispify "light_set_diffuse_colour" 'function)) :void
+  (handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "light_set_diffuse_colour" 'function))
+
+(cffi:defcfun ("light_set_specular_colour" #.(swig-lispify "light_set_specular_colour" 'function)) :void
+  (handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "light_set_specular_colour" 'function))
+
+(cffi:defcfun ("light_set_direction" #.(swig-lispify "light_set_direction" 'function)) :void
+  (handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "light_set_direction" 'function))
+
+(cffi:defcfun ("light_set_spotlight_range" #.(swig-lispify "light_set_spotlight_range" 'function)) :void
+  (handle :pointer)
+  (inner_angle :float)
+  (outer_angle :float)
+  (falloff :float))
+
+(cl:export '#.(swig-lispify "light_set_spotlight_range" 'function))
+
+(cffi:defcfun ("light_set_power_scale" #.(swig-lispify "light_set_power_scale" 'function)) :void
+  (handle :pointer)
+  (power :float))
+
+(cl:export '#.(swig-lispify "light_set_power_scale" 'function))
+
+(cffi:defcfun ("light_get_power_scale" #.(swig-lispify "light_get_power_scale" 'function)) :float
+  (handle :pointer))
+
+(cl:export '#.(swig-lispify "light_get_power_scale" 'function))
+
+(cffi:defcfun ("light_set_attenuation" #.(swig-lispify "light_set_attenuation" 'function)) :void
+  (handle :pointer)
+  (range :float)
+  (constant :float)
+  (linear :float)
+  (quadratic :float))
+
+(cl:export '#.(swig-lispify "light_set_attenuation" 'function))
 
 (cffi:defcfun ("add_frame_listener" #.(swig-lispify "add_frame_listener" 'function)) :void
   (frame_event :pointer)
@@ -713,7 +631,7 @@
 
 (cl:export '#.(swig-lispify "mesh_manager_get" 'function))
 
-(cffi:defcfun ("mesh_manager_create_plane" #.(swig-lispify "mesh_manager_create_plane" 'function)) :pointer
+(cffi:defcfun ("mesh_manager_create_plane" #.(swig-lispify "mesh_manager_create_plane" 'function)) :void
   (name :string)
   (group_name :string)
   (plane :pointer)
@@ -730,6 +648,188 @@
   (upvector_z :float))
 
 (cl:export '#.(swig-lispify "mesh_manager_create_plane" 'function))
+
+(cffi:defcfun ("movable_object_set_cast_shadows" #.(swig-lispify "movable_object_set_cast_shadows" 'function)) :void
+  (handle :pointer)
+  (cast_shadows :int))
+
+(cl:export '#.(swig-lispify "movable_object_set_cast_shadows" 'function))
+
+(cffi:defcfun ("release_engine" #.(swig-lispify "release_engine" 'function)) :void)
+
+(cl:export '#.(swig-lispify "release_engine" 'function))
+
+(cffi:defcfun ("default_engine_options" #.(swig-lispify "default_engine_options" 'function)) :void
+  (options :pointer))
+
+(cl:export '#.(swig-lispify "default_engine_options" 'function))
+
+(cffi:defcfun ("init_engine" #.(swig-lispify "init_engine" 'function)) :void
+  (options #.(swig-lispify "engine_options" 'classname)))
+
+(cl:export '#.(swig-lispify "init_engine" 'function))
+
+(cffi:defcfun ("create_root" #.(swig-lispify "create_root" 'function)) :pointer
+  (pluginFileName :string)
+  (configFileName :string)
+  (logFileName :string))
+
+(cl:export '#.(swig-lispify "create_root" 'function))
+
+(cffi:defcfun ("root_initialise" #.(swig-lispify "root_initialise" 'function)) :pointer
+  (auto_create_window :int)
+  (render_window_title :string))
+
+(cl:export '#.(swig-lispify "root_initialise" 'function))
+
+(cffi:defcfun ("create_render_window" #.(swig-lispify "create_render_window" 'function)) :pointer
+  (name :string)
+  (width :int)
+  (height :int)
+  (full_screen :int))
+
+(cl:export '#.(swig-lispify "create_render_window" 'function))
+
+(cffi:defcfun ("create_render_window_gl_context" #.(swig-lispify "create_render_window_gl_context" 'function)) :pointer
+  (name :string)
+  (width :int)
+  (height :int)
+  (full_screen :int))
+
+(cl:export '#.(swig-lispify "create_render_window_gl_context" 'function))
+
+(cffi:defcfun ("create_render_window_hwnd" #.(swig-lispify "create_render_window_hwnd" 'function)) :pointer
+  (name :string)
+  (width :int)
+  (height :int)
+  (full_screen :int)
+  (hwnd :unsigned-long))
+
+(cl:export '#.(swig-lispify "create_render_window_hwnd" 'function))
+
+(cffi:defcfun ("render_window_get_hwnd" #.(swig-lispify "render_window_get_hwnd" 'function)) :unsigned-int
+  (window_handle :pointer))
+
+(cl:export '#.(swig-lispify "render_window_get_hwnd" 'function))
+
+(cffi:defcfun ("render_window_set_visible" #.(swig-lispify "render_window_set_visible" 'function)) :void
+  (window_handle :pointer)
+  (visible :int))
+
+(cl:export '#.(swig-lispify "render_window_set_visible" 'function))
+
+(cffi:defcfun ("render_window_update" #.(swig-lispify "render_window_update" 'function)) :void
+  (window_handle :pointer)
+  (swap_buffers :int))
+
+(cl:export '#.(swig-lispify "render_window_update" 'function))
+
+(cffi:defcfun ("current_window_update" #.(swig-lispify "current_window_update" 'function)) :void
+  (swap_buffers :int))
+
+(cl:export '#.(swig-lispify "current_window_update" 'function))
+
+(cffi:defcfun ("render_window_resize" #.(swig-lispify "render_window_resize" 'function)) :void
+  (width :unsigned-int)
+  (height :unsigned-int))
+
+(cl:export '#.(swig-lispify "render_window_resize" 'function))
+
+(cffi:defcfun ("render_window_moved_or_resized" #.(swig-lispify "render_window_moved_or_resized" 'function)) :void)
+
+(cl:export '#.(swig-lispify "render_window_moved_or_resized" 'function))
+
+(cffi:defcfun ("render_window_closed" #.(swig-lispify "render_window_closed" 'function)) :int)
+
+(cl:export '#.(swig-lispify "render_window_closed" 'function))
+
+(cffi:defcfun ("root_is_initialised" #.(swig-lispify "root_is_initialised" 'function)) :int)
+
+(cl:export '#.(swig-lispify "root_is_initialised" 'function))
+
+(cffi:defcfun ("save_config" #.(swig-lispify "save_config" 'function)) :void)
+
+(cl:export '#.(swig-lispify "save_config" 'function))
+
+(cffi:defcfun ("restore_config" #.(swig-lispify "restore_config" 'function)) :int)
+
+(cl:export '#.(swig-lispify "restore_config" 'function))
+
+(cffi:defcfun ("show_config_dialog" #.(swig-lispify "show_config_dialog" 'function)) :int)
+
+(cl:export '#.(swig-lispify "show_config_dialog" 'function))
+
+(cffi:defcfun ("add_render_system" #.(swig-lispify "add_render_system" 'function)) :void
+  (render_system :pointer))
+
+(cl:export '#.(swig-lispify "add_render_system" 'function))
+
+(cffi:defcfun ("set_render_system" #.(swig-lispify "set_render_system" 'function)) :void
+  (render_system :pointer))
+
+(cl:export '#.(swig-lispify "set_render_system" 'function))
+
+(cffi:defcfun ("get_render_system" #.(swig-lispify "get_render_system" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "get_render_system" 'function))
+
+(cffi:defcfun ("get_render_system_by_name" #.(swig-lispify "get_render_system_by_name" 'function)) :pointer
+  (render_system_name :string))
+
+(cl:export '#.(swig-lispify "get_render_system_by_name" 'function))
+
+(cffi:defcfun ("load_ogre_plugin" #.(swig-lispify "load_ogre_plugin" 'function)) :void
+  (plugin :string))
+
+(cl:export '#.(swig-lispify "load_ogre_plugin" 'function))
+
+(cffi:defcfun ("create_scene_manager" #.(swig-lispify "create_scene_manager" 'function)) :pointer
+  (type_name :string)
+  (instance_name :string))
+
+(cl:export '#.(swig-lispify "create_scene_manager" 'function))
+
+(cffi:defcfun ("get_scene_manager" #.(swig-lispify "get_scene_manager" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "get_scene_manager" 'function))
+
+(cffi:defcfun ("get_scene_manager_by_name" #.(swig-lispify "get_scene_manager_by_name" 'function)) :pointer
+  (scene_manager_instance_name :string))
+
+(cl:export '#.(swig-lispify "get_scene_manager_by_name" 'function))
+
+(cffi:defcfun ("render_one_frame" #.(swig-lispify "render_one_frame" 'function)) :int)
+
+(cl:export '#.(swig-lispify "render_one_frame" 'function))
+
+(cffi:defcfun ("render_one_frame_ex" #.(swig-lispify "render_one_frame_ex" 'function)) :int
+  (time_since_last_frame :float))
+
+(cl:export '#.(swig-lispify "render_one_frame_ex" 'function))
+
+(cffi:defcfun ("render_loop_once" #.(swig-lispify "render_loop_once" 'function)) :int)
+
+(cl:export '#.(swig-lispify "render_loop_once" 'function))
+
+(cffi:defcfun ("render_loop" #.(swig-lispify "render_loop" 'function)) :void)
+
+(cl:export '#.(swig-lispify "render_loop" 'function))
+
+(cffi:defcfun ("pump_messages" #.(swig-lispify "pump_messages" 'function)) :void)
+
+(cl:export '#.(swig-lispify "pump_messages" 'function))
+
+(cffi:defcfun ("render_system_set_config_option" #.(swig-lispify "render_system_set_config_option" 'function)) :void
+  (render_system_handle :pointer)
+  (option :string)
+  (value :string))
+
+(cl:export '#.(swig-lispify "render_system_set_config_option" 'function))
+
+(cffi:defcfun ("log_message" #.(swig-lispify "log_message" 'function)) :void
+  (message :string))
+
+(cl:export '#.(swig-lispify "log_message" 'function))
 
 (cffi:defcstruct #.(swig-lispify "InputSystemHandle__" 'classname)
 	(#.(swig-lispify "unused" 'slotname) :int))

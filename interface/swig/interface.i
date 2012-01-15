@@ -21,7 +21,12 @@
 %insert("swiglisp") %{
 #+sbcl(sb-ext::set-floating-point-modes :traps nil)
 %}
-%include "../ogre_interface.h"
-%include "../ois_interface.h"
+
+%include "../h/ogre_enums.h"
+%include "../h/ogre_interface.h"
+%include "../h/ogre_root.h"
+%include "../h/ois_interface.h"
+
+
 
 

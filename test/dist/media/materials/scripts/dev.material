@@ -1,0 +1,46 @@
+material Dev/White
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture triangleoutline.png
+			}
+		}
+	}
+}
+
+material Dev/Red
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture triangleoutline_red.png
+			}
+		}
+	}
+}
+
+material Dev/CloudFence
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend add
+			depth_write off
+
+			texture_unit
+			{
+				texture cloud_fence.png
+			}
+		}
+	}
+}
+

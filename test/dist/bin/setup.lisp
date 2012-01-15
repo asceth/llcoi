@@ -61,33 +61,6 @@
 (if *use-mouse*
     (setq *mouse* (ogre:create-mouse-object 0)))
 
-(defun handle-input (frametime)
-  (ogre:keyboard-capture *keyboard*)
-  (if *use-mouse*
-      (ogre:mouse-capture *mouse*))
-  (if (= (ogre:keyboard-is-key-down *keyboard* :+KC-ESCAPE+) 1) 0 1))
-
-(defun framequeued (evt_time frame_time event_type)
-  (with-simple-restart
-      (skip-frame-queued-body "Skip frame queued body")
-    (setq *timer* (+ *timer* frame_time))
-    (let ((x (* (cos *timer*) 100.0))
-          (y (* (sin *timer*) 100.0))
-          (z 50.0)
-          )
-      (ogre:camera-set-position *camerahandle* x y z)
-      (ogre::camera-lookat *camerahandle* 0.0 0.0 0.0))
-    (handle-input frame_time)))
-
-
-(cffi:defcallback framequeued :int
-    ((evt_time :float)
-     (frame_time :float)
-     (event_type :int))
-  (funcall #'framequeued evt_time frame_time event_type))
-
-(ogre:add-frame-listener (cffi:callback framequeued) 2)
-
 ;;(ogre:remove-frame-listener (cffi:callback framequeued))
 
 ;; (defun framequeued (evt_time frame_time event_type)
@@ -104,21 +77,8 @@
 ;; (cffi:callback framequeued_callback)
 ;; (ogre:add-frame-listener (cffi:callback framequeued_callback) 2)
 
-(ogre:render-loop-once)
+;(ogre:render-loop-once)
 
-(defun game-loop ()
-  (loop
-     until (eq *continue-loop* 0)
-     do
-       (with-simple-restart
-           (skip-ogre-loop "Skip ogre loop body")
-         (setf *continue-loop* (ogre:render-loop-once)))
-       (with-simple-restart
-      (skip-swank-request "Skip swank evaluation")
-         (let ((connection
-                (or swank::*emacs-connection* (swank::default-connection))))
-           (swank::handle-requests connection t))))
-)
 
 (defun pause ()
   (setf *continue-loop* 0))

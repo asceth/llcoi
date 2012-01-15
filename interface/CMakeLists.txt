@@ -98,36 +98,69 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 endif()
 
 set(HDRS
-	./ogre_interface.h
-	./ois_interface.h
-	./ogre_manager.h
+	./h/ogre_interface.h
+  ./h/ogre_interface_prerequisites.h
+  ./h/ogre_prerequisites.h
+  ./h/ogre_conversions.h
+  ./h/ogre_enums.h
+	./h/ogre_interface_manager.h
+  ./h/ogre_camera.h
+  ./h/ogre_entity.h
+  ./h/ogre_frame_listener.h
+  ./h/ogre_image.h
+  ./h/ogre_light.h
+  ./h/ogre_manual_object.h
+  ./h/ogre_math.h
+  ./h/ogre_mesh_manager.h
+  ./h/ogre_movable_object.h
+  ./h/ogre_plane.h
+  ./h/ogre_render_system.h
+  ./h/ogre_render_window.h
+  ./h/ogre_resource_group_manager.h
+  ./h/ogre_root.h
+  ./h/ogre_scene_manager.h
+  ./h/ogre_scene_node.h
+  ./h/ogre_terrain.h
+  ./h/ogre_terrain_global_options.h
+  ./h/ogre_terrain_group.h
+  ./h/ogre_terrain_layer_blend_map.h
+  ./h/ogre_viewport.h
+  ./h/ogre_window_event_listener.h
+	./h/ois_interface.h
 )
 
 set(SRCS
 	./main.cpp
-	./ois_bind.cpp
-	./root_bind.cpp
-	./entity_bind.cpp
-	./scene_manager_bind.cpp
-	./scene_node_bind.cpp
-	./camera_bind.cpp
-	./resource_group_manager_bind.cpp
-	./render_window_bind.cpp
-	./render_system_bind.cpp
-	./light_bind.cpp
-	./frame_listener_bind.cpp
-	./viewport_bind.cpp
-	./movable_object_bind.cpp
-	./window_event_listener_bind.cpp
-	./manual_object_bind.cpp
-  ./plane_bind.cpp
-  ./mesh_manager_bind.cpp
-  ./movable_object_bind.cpp
+  ./c/ogre_camera.cpp
+  ./c/ogre_entity.cpp
+  ./c/ogre_frame_listener.cpp
+  ./c/ogre_image.cpp
+  ./c/ogre_light.cpp
+  ./c/ogre_manual_object.cpp
+  ./c/ogre_math.cpp
+  ./c/ogre_mesh_manager.cpp
+  ./c/ogre_movable_object.cpp
+  ./c/ogre_plane.cpp
+  ./c/ogre_render_system.cpp
+  ./c/ogre_render_window.cpp
+  ./c/ogre_resource_group_manager.cpp
+  ./c/ogre_root.cpp
+  ./c/ogre_scene_manager.cpp
+  ./c/ogre_scene_node.cpp
+  ./c/ogre_terrain.cpp
+  ./c/ogre_terrain_global_options.cpp
+  ./c/ogre_terrain_group.cpp
+  ./c/ogre_terrain_layer_blend_map.cpp
+  ./c/ogre_viewport.cpp
+  ./c/ogre_window_event_listener.cpp
+  ./c/ois.cpp
 )
 
 include_directories(${OGRE_INCLUDE_DIRS} ${OIS_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
+
+include_directories("${llcoi_SOURCE_DIR}/h")
 
 if(${LLCOI_DYNAMIC_BUILD})
     add_library(llcoi SHARED ${HDRS} ${SRCS})
@@ -146,7 +179,7 @@ if(UNIX)
 ${OGREINTERFACE_VERSION_STRING} SOVERSION ${abi_version} )
 endif()
 
-target_link_libraries(llcoi ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
+target_link_libraries(llcoi ${OGRE_LIBRARIES} ${OGRE_Terrain_LIBRARIES} ${OGRE_Paging_LIBRARIES} ${OIS_LIBRARIES})
 
 set(LIBRARY_OUTPUT_PATH "${BUILD_ROOTDIR}/lib")
 

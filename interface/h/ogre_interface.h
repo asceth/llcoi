@@ -1,5 +1,5 @@
 /******************************************************************************
- * main.cpp - C++ code - main entries
+ * ogre_interface.h - main include file for C clients
  ******************************************************************************
  * This file is part of
  *     __ __              _
@@ -34,27 +34,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ******************************************************************************/
-#include <ogre_interface.h>
+#pragma once
 
-#include <OgreRoot.h>
-#include <OgreEntity.h>
-#include "ogre_interface_manager.h"
-
-#ifdef PLATFORM_WIN
-BOOL APIENTRY DllMain( HANDLE /*hModule*/, DWORD /*ul_reason_for_call*/, LPVOID /*lpReserved*/ )
-{
-#if defined( _MSC_VER ) && defined( _DEBUG )
-    //_crtBreakAlloc = 1397;
-    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-#endif
-
-    /*switch( ul_reason_for_call )
-    {
-    case DLL_PROCESS_DETACH:
-        _CrtDumpMemoryLeaks();
-        break;
-    }*/
-
-    return TRUE;
-}
-#endif
+#include "ogre_interface_prerequisites.h"
+#include "ogre_enums.h"
+#include "ogre_camera.h"
+#include "ogre_entity.h"
+#include "ogre_frame_listener.h"
+#include "ogre_image.h"
+#include "ogre_light.h"
+#include "ogre_manual_object.h"
+#include "ogre_math.h"
+#include "ogre_mesh_manager.h"
+#include "ogre_movable_object.h"
+#include "ogre_plane.h"
+#include "ogre_render_system.h"
+#include "ogre_render_window.h"
+#include "ogre_resource_group_manager.h"
+#include "ogre_root.h"
+#include "ogre_scene_manager.h"
+#include "ogre_scene_node.h"
+#include "ogre_terrain.h"
+#include "ogre_terrain_global_options.h"
+#include "ogre_terrain_group.h"
+#include "ogre_terrain_layer_blend_map.h"
+#include "ogre_viewport.h"
+#include "ogre_window_event_listener.h"
