@@ -61,7 +61,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-set(CMAKE_DEBUG_POSTFIX "_d")
+set(CMAKE_DEBUG_POSTFIX "")
 
 find_package(OGRE REQUIRED)
 find_package(OIS REQUIRED)
@@ -127,6 +127,7 @@ set(HDRS
   ./h/ogre_viewport.h
   ./h/ogre_window_event_listener.h
 	./h/ois_interface.h
+	./h/ois_input_listener.h
 )
 
 set(SRCS
@@ -172,7 +173,7 @@ else()
         COMPILE_DEFINITIONS LLCOI_BUILD_STATIC)
 endif()
 
-set_target_properties(llcoi PROPERTIES DEBUG_POSTFIX _d)
+#set_target_properties(llcoi PROPERTIES DEBUG_POSTFIX _d)
 
 if(UNIX)
   set_target_properties( llcoi PROPERTIES OUTPUT_NAME "llcoi" VERSION

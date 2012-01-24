@@ -55,6 +55,15 @@ void scene_manager_set_shadow_technique(CoiHandle scene_manager_handle, const in
   scene_manager->setShadowTechnique((Ogre::ShadowTechnique)technique);
 }
 
+
+CoiHandle scene_manager_get_root_scene_node(CoiHandle scene_manager_handle)
+{
+  HANDLE(Ogre::SceneManager*, scene_manager);
+  return scene_manager->getRootSceneNode();
+}
+
+
+
 /*
 Ogre::SceneManager::WORLD_GEOMETRY_TYPE_MASK
 Ogre::SceneManager::ENTITY_TYPE_MASK

@@ -14,11 +14,9 @@
   (use-foreign-library libllcoi)
   (format t "~&[ogre] foreign library libllcoi loaded~%"))
 
-
 (load-foreign-libraries)
 
 (in-package :ogre)
-
 
 
 
@@ -73,36 +71,6 @@
 #+sbcl(sb-ext::set-floating-point-modes :traps nil)
 
 
-(cffi:defcenum #.(swig-lispify "LightTypes" 'enumname)
-	#.(swig-lispify "LT_POINT" 'enumvalue :keyword)
-	#.(swig-lispify "LT_DIRECTIONAL" 'enumvalue :keyword)
-	#.(swig-lispify "LT_SPOTLIGHT" 'enumvalue :keyword))
-
-(cl:export '#.(swig-lispify "LightTypes" 'enumname))
-
-(cffi:defcenum #.(swig-lispify "ShadowTechnique" 'enumname)
-	(#.(swig-lispify "SHADOWTYPE_NONE" 'enumvalue :keyword) #.#x00)
-	(#.(swig-lispify "SHADOWDETAILTYPE_ADDITIVE" 'enumvalue :keyword) #.#x01)
-	(#.(swig-lispify "SHADOWDETAILTYPE_MODULATIVE" 'enumvalue :keyword) #.#x02)
-	(#.(swig-lispify "SHADOWDETAILTYPE_INTEGRATED" 'enumvalue :keyword) #.#x04)
-	(#.(swig-lispify "SHADOWDETAILTYPE_STENCIL" 'enumvalue :keyword) #.#x10)
-	(#.(swig-lispify "SHADOWDETAILTYPE_TEXTURE" 'enumvalue :keyword) #.#x20)
-	(#.(swig-lispify "SHADOWTYPE_STENCIL_MODULATIVE" 'enumvalue :keyword) #.#x12)
-	(#.(swig-lispify "SHADOWTYPE_STENCIL_ADDITIVE" 'enumvalue :keyword) #.#x11)
-	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE" 'enumvalue :keyword) #.#x22)
-	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE" 'enumvalue :keyword) #.#x21)
-	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED" 'enumvalue :keyword) #.#x25)
-	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED" 'enumvalue :keyword) #.#x26))
-
-(cl:export '#.(swig-lispify "ShadowTechnique" 'enumname))
-
-(cffi:defcenum #.(swig-lispify "OgreTerrainAlignment" 'enumname)
-	(#.(swig-lispify "ALIGN_X_Z" 'enumvalue :keyword) #.0)
-	(#.(swig-lispify "ALIGN_X_Y" 'enumvalue :keyword) #.1)
-	(#.(swig-lispify "ALIGN_Y_Z" 'enumvalue :keyword) #.2))
-
-(cl:export '#.(swig-lispify "OgreTerrainAlignment" 'enumname))
-
 (cl:defconstant #.(swig-lispify "EVENT_FRAME_STARTED" 'constant) 1)
 
 (cl:export '#.(swig-lispify "EVENT_FRAME_STARTED" 'constant))
@@ -144,6 +112,22 @@
 
 (cl:export '#.(swig-lispify "z" 'slotname))
 
+(cffi:defcstruct #.(swig-lispify "coiColourValue" 'classname)
+	(#.(swig-lispify "r" 'slotname) :float)
+	(#.(swig-lispify "g" 'slotname) :float)
+	(#.(swig-lispify "b" 'slotname) :float)
+	(#.(swig-lispify "a" 'slotname) :float))
+
+(cl:export '#.(swig-lispify "coiColourValue" 'classname))
+
+(cl:export '#.(swig-lispify "r" 'slotname))
+
+(cl:export '#.(swig-lispify "g" 'slotname))
+
+(cl:export '#.(swig-lispify "b" 'slotname))
+
+(cl:export '#.(swig-lispify "a" 'slotname))
+
 (cffi:defcstruct #.(swig-lispify "engine_options" 'classname)
 	(#.(swig-lispify "renderer_s" 'slotname) :string)
 	(#.(swig-lispify "plugin_folder_s" 'slotname) :string)
@@ -169,284 +153,54 @@
 
 (cl:export '#.(swig-lispify "auto_window" 'slotname))
 
-(cffi:defcfun ("set_default_num_mipmaps" #.(swig-lispify "set_default_num_mipmaps" 'function)) :void
-  (number :int))
-
-(cl:export '#.(swig-lispify "set_default_num_mipmaps" 'function))
-
-(cffi:defcfun ("set_ambient_light_rgba" #.(swig-lispify "set_ambient_light_rgba" 'function)) :void
-  (r :float)
-  (g :float)
-  (b :float)
-  (a :float))
-
-(cl:export '#.(swig-lispify "set_ambient_light_rgba" 'function))
-
-(cffi:defcfun ("set_ambient_light_rgb" #.(swig-lispify "set_ambient_light_rgb" 'function)) :void
-  (r :float)
-  (g :float)
-  (b :float))
-
-(cl:export '#.(swig-lispify "set_ambient_light_rgb" 'function))
-
-(cffi:defcfun ("scene_manager_set_shadow_technique" #.(swig-lispify "scene_manager_set_shadow_technique" 'function)) :void
-  (technique :int))
-
-(cl:export '#.(swig-lispify "scene_manager_set_shadow_technique" 'function))
-
-(cffi:defcfun ("add_viewport" #.(swig-lispify "add_viewport" 'function)) :pointer
-  (camera_handle :pointer))
-
-(cl:export '#.(swig-lispify "add_viewport" 'function))
-
-(cffi:defcfun ("scene_manager_log_name" #.(swig-lispify "scene_manager_log_name" 'function)) :void)
-
-(cl:export '#.(swig-lispify "scene_manager_log_name" 'function))
-
-(cffi:defcfun ("create_child_scenenode" #.(swig-lispify "create_child_scenenode" 'function)) :pointer
-  (node_name :string))
-
-(cl:export '#.(swig-lispify "create_child_scenenode" 'function))
-
-(cffi:defcfun ("attach_entity_to_scenenode" #.(swig-lispify "attach_entity_to_scenenode" 'function)) :void
-  (entity_handle :pointer)
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "attach_entity_to_scenenode" 'function))
-
-(cffi:defcfun ("scenenode_update" #.(swig-lispify "scenenode_update" 'function)) :void
-  (scenenode_handle :pointer)
-  (update_children :int)
-  (parent_has_changed :int))
-
-(cl:export '#.(swig-lispify "scenenode_update" 'function))
-
-(cffi:defcfun ("scenenode_update_bounds" #.(swig-lispify "scenenode_update_bounds" 'function)) :void
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_update_bounds" 'function))
-
-(cffi:defcfun ("scenenode_get_attached_entity_int" #.(swig-lispify "scenenode_get_attached_entity_int" 'function)) :pointer
-  (scenenode_handle :pointer)
-  (entity_index :int))
-
-(cl:export '#.(swig-lispify "scenenode_get_attached_entity_int" 'function))
-
-(cffi:defcfun ("scenenode_get_attached_entity" #.(swig-lispify "scenenode_get_attached_entity" 'function)) :pointer
-  (scenenode_handle :pointer)
-  (entity_name :string))
-
-(cl:export '#.(swig-lispify "scenenode_get_attached_entity" 'function))
-
-(cffi:defcfun ("scenenode_num_attached_objects" #.(swig-lispify "scenenode_num_attached_objects" 'function)) :int
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_num_attached_objects" 'function))
-
-(cffi:defcfun ("scenenode_detach_entity_int" #.(swig-lispify "scenenode_detach_entity_int" 'function)) :void
-  (scenenode_handle :pointer)
-  (entity_index :int))
-
-(cl:export '#.(swig-lispify "scenenode_detach_entity_int" 'function))
-
-(cffi:defcfun ("scenenode_detach_entity" #.(swig-lispify "scenenode_detach_entity" 'function)) :void
-  (scenenode_handle :pointer)
-  (entity_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_detach_entity" 'function))
-
-(cffi:defcfun ("scenenode_detach_entity_string" #.(swig-lispify "scenenode_detach_entity_string" 'function)) :void
-  (scenenode_handle :pointer)
-  (entity_name :string))
-
-(cl:export '#.(swig-lispify "scenenode_detach_entity_string" 'function))
-
-(cffi:defcfun ("scenenode_detach_all_objects" #.(swig-lispify "scenenode_detach_all_objects" 'function)) :void
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_detach_all_objects" 'function))
-
-(cffi:defcfun ("scenenode_is_in_scenegraph" #.(swig-lispify "scenenode_is_in_scenegraph" 'function)) :int
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_is_in_scenegraph" 'function))
-
-(cffi:defcfun ("scenenode_notify_rootnode" #.(swig-lispify "scenenode_notify_rootnode" 'function)) :void
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_notify_rootnode" 'function))
-
-(cffi:defcfun ("scenenode_show_boundingbox" #.(swig-lispify "scenenode_show_boundingbox" 'function)) :void
-  (scenenode_handle :pointer)
-  (show_boundingbox :int))
-
-(cl:export '#.(swig-lispify "scenenode_show_boundingbox" 'function))
-
-(cffi:defcfun ("scenenode_hide_boundingbox" #.(swig-lispify "scenenode_hide_boundingbox" 'function)) :void
-  (scenenode_handle :pointer)
-  (hide_boundingbox :int))
-
-(cl:export '#.(swig-lispify "scenenode_hide_boundingbox" 'function))
-
-(cffi:defcfun ("scenenode_get_show_boundingbox" #.(swig-lispify "scenenode_get_show_boundingbox" 'function)) :int
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_get_show_boundingbox" 'function))
-
-(cffi:defcfun ("scenenode_get_parent_scenenode" #.(swig-lispify "scenenode_get_parent_scenenode" 'function)) :pointer
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_get_parent_scenenode" 'function))
-
-(cffi:defcfun ("scenenode_set_visible" #.(swig-lispify "scenenode_set_visible" 'function)) :void
-  (scenenode_handle :pointer)
-  (visible :int))
-
-(cl:export '#.(swig-lispify "scenenode_set_visible" 'function))
-
-(cffi:defcfun ("scenenode_set_visible_ex" #.(swig-lispify "scenenode_set_visible_ex" 'function)) :void
-  (scenenode_handle :pointer)
-  (visible :int)
-  (cascade :int))
-
-(cl:export '#.(swig-lispify "scenenode_set_visible_ex" 'function))
-
-(cffi:defcfun ("scenenode_flip_visibility" #.(swig-lispify "scenenode_flip_visibility" 'function)) :void
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_flip_visibility" 'function))
-
-(cffi:defcfun ("scenenode_flip_visibility_ex" #.(swig-lispify "scenenode_flip_visibility_ex" 'function)) :void
-  (scenenode_handle :pointer)
-  (cascade :int))
-
-(cl:export '#.(swig-lispify "scenenode_flip_visibility_ex" 'function))
-
-(cffi:defcfun ("scenenode_set_debug_display_enabled" #.(swig-lispify "scenenode_set_debug_display_enabled" 'function)) :void
-  (scenenode_handle :pointer)
-  (enabled :int))
-
-(cl:export '#.(swig-lispify "scenenode_set_debug_display_enabled" 'function))
-
-(cffi:defcfun ("scenenode_set_debug_display_enabled_ex" #.(swig-lispify "scenenode_set_debug_display_enabled_ex" 'function)) :void
-  (scenenode_handle :pointer)
-  (enabled :int)
-  (cascade :int))
-
-(cl:export '#.(swig-lispify "scenenode_set_debug_display_enabled_ex" 'function))
-
-(cffi:defcfun ("scenenode_get_creator" #.(swig-lispify "scenenode_get_creator" 'function)) :pointer
-  (scenenode_handle :pointer))
-
-(cl:export '#.(swig-lispify "scenenode_get_creator" 'function))
-
-(cffi:defcfun ("scenenode_set_direction" #.(swig-lispify "scenenode_set_direction" 'function)) :void
-  (scenenode_handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_set_direction" 'function))
-
-(cffi:defcfun ("scenenode_set_orientation" #.(swig-lispify "scenenode_set_orientation" 'function)) :void
-  (scenenode_handle :pointer)
-  (w :float)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_set_orientation" 'function))
-
-(cffi:defcfun ("scenenode_set_position" #.(swig-lispify "scenenode_set_position" 'function)) :void
-  (scenenode_handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_set_position" 'function))
-
-(cffi:defcfun ("scenenode_yaw" #.(swig-lispify "scenenode_yaw" 'function)) :void
-  (scenenode_handle :pointer)
-  (radians :float))
-
-(cl:export '#.(swig-lispify "scenenode_yaw" 'function))
-
-(cffi:defcfun ("scenenode_set_scale" #.(swig-lispify "scenenode_set_scale" 'function)) :void
-  (scenenode_handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_set_scale" 'function))
-
-(cffi:defcfun ("scenenode_scale" #.(swig-lispify "scenenode_scale" 'function)) :void
-  (scenenode_handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_scale" 'function))
-
-(cffi:defcfun ("scenenode_translate" #.(swig-lispify "scenenode_translate" 'function)) :void
-  (scenenode_handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "scenenode_translate" 'function))
-
-(cffi:defcfun ("scenenode_roll" #.(swig-lispify "scenenode_roll" 'function)) :void
-  (scenenode_handle :pointer)
-  (radians :float))
-
-(cl:export '#.(swig-lispify "scenenode_roll" 'function))
-
-(cffi:defcfun ("scenenode_pitch" #.(swig-lispify "scenenode_pitch" 'function)) :void
-  (scenenode_handle :pointer)
-  (radians :float))
-
-(cl:export '#.(swig-lispify "scenenode_pitch" 'function))
-
-(cffi:defcfun ("viewport_set_background_colour" #.(swig-lispify "viewport_set_background_colour" 'function)) :void
-  (viewport_handle :pointer)
-  (r :float)
-  (g :float)
-  (b :float))
-
-(cl:export '#.(swig-lispify "viewport_set_background_colour" 'function))
-
-(cffi:defcfun ("viewport_get_width" #.(swig-lispify "viewport_get_width" 'function)) :float
-  (viewport_handle :pointer))
-
-(cl:export '#.(swig-lispify "viewport_get_width" 'function))
-
-(cffi:defcfun ("viewport_get_height" #.(swig-lispify "viewport_get_height" 'function)) :float
-  (viewport_handle :pointer))
-
-(cl:export '#.(swig-lispify "viewport_get_height" 'function))
-
-(cffi:defcfun ("setup_resources" #.(swig-lispify "setup_resources" 'function)) :void
-  (resources_cfg :string))
-
-(cl:export '#.(swig-lispify "setup_resources" 'function))
-
-(cffi:defcfun ("add_resource_location" #.(swig-lispify "add_resource_location" 'function)) :void
-  (location :string)
-  (type :string)
-  (group :string))
-
-(cl:export '#.(swig-lispify "add_resource_location" 'function))
-
-(cffi:defcfun ("initialise_all_resourcegroups" #.(swig-lispify "initialise_all_resourcegroups" 'function)) :void)
-
-(cl:export '#.(swig-lispify "initialise_all_resourcegroups" 'function))
+(cffi:defcenum #.(swig-lispify "OgreLightTypes" 'enumname)
+	#.(swig-lispify "LT_POINT" 'enumvalue :keyword)
+	#.(swig-lispify "LT_DIRECTIONAL" 'enumvalue :keyword)
+	#.(swig-lispify "LT_SPOTLIGHT" 'enumvalue :keyword))
+
+(cl:export '#.(swig-lispify "OgreLightTypes" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "OgreShadowTechnique" 'enumname)
+	(#.(swig-lispify "SHADOWTYPE_NONE" 'enumvalue :keyword) #.#x00)
+	(#.(swig-lispify "SHADOWDETAILTYPE_ADDITIVE" 'enumvalue :keyword) #.#x01)
+	(#.(swig-lispify "SHADOWDETAILTYPE_MODULATIVE" 'enumvalue :keyword) #.#x02)
+	(#.(swig-lispify "SHADOWDETAILTYPE_INTEGRATED" 'enumvalue :keyword) #.#x04)
+	(#.(swig-lispify "SHADOWDETAILTYPE_STENCIL" 'enumvalue :keyword) #.#x10)
+	(#.(swig-lispify "SHADOWDETAILTYPE_TEXTURE" 'enumvalue :keyword) #.#x20)
+	(#.(swig-lispify "SHADOWTYPE_STENCIL_MODULATIVE" 'enumvalue :keyword) #.#x12)
+	(#.(swig-lispify "SHADOWTYPE_STENCIL_ADDITIVE" 'enumvalue :keyword) #.#x11)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE" 'enumvalue :keyword) #.#x22)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE" 'enumvalue :keyword) #.#x21)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_ADDITIVE_INTEGRATED" 'enumvalue :keyword) #.#x25)
+	(#.(swig-lispify "SHADOWTYPE_TEXTURE_MODULATIVE_INTEGRATED" 'enumvalue :keyword) #.#x26))
+
+(cl:export '#.(swig-lispify "OgreShadowTechnique" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "OgreTerrainAlignment" 'enumname)
+	(#.(swig-lispify "ALIGN_X_Z" 'enumvalue :keyword) #.0)
+	(#.(swig-lispify "ALIGN_X_Y" 'enumvalue :keyword) #.1)
+	(#.(swig-lispify "ALIGN_Y_Z" 'enumvalue :keyword) #.2))
+
+(cl:export '#.(swig-lispify "OgreTerrainAlignment" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "OgreRenderOperationType" 'enumname)
+	(#.(swig-lispify "OT_POINT_LIST" 'enumvalue :keyword) #.1)
+	(#.(swig-lispify "OT_LINE_LIST" 'enumvalue :keyword) #.2)
+	(#.(swig-lispify "OT_LINE_STRIP" 'enumvalue :keyword) #.3)
+	(#.(swig-lispify "OT_TRIANGLE_LIST" 'enumvalue :keyword) #.4)
+	(#.(swig-lispify "OT_TRIANGLE_STRIP" 'enumvalue :keyword) #.5)
+	(#.(swig-lispify "OT_TRIANGLE_FAN" 'enumvalue :keyword) #.6))
+
+(cl:export '#.(swig-lispify "OgreRenderOperationType" 'enumname))
 
 (cffi:defcfun ("create_camera" #.(swig-lispify "create_camera" 'function)) :pointer
+  (scene_manager_handle :pointer)
   (camera_name :string))
 
 (cl:export '#.(swig-lispify "create_camera" 'function))
 
 (cffi:defcfun ("get_camera" #.(swig-lispify "get_camera" 'function)) :pointer
+  (scene_manager_handle :pointer)
   (camera_name :string))
 
 (cl:export '#.(swig-lispify "get_camera" 'function))
@@ -503,6 +257,15 @@
 
 (cl:export '#.(swig-lispify "camera_set_position" 'function))
 
+(cffi:defcfun ("camera_set_orientation" #.(swig-lispify "camera_set_orientation" 'function)) :void
+  (camera_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float)
+  (w :float))
+
+(cl:export '#.(swig-lispify "camera_set_orientation" 'function))
+
 (cffi:defcfun ("camera_lookat" #.(swig-lispify "camera_lookat" 'function)) :void
   (camera_handle :pointer)
   (x :float)
@@ -512,82 +275,24 @@
 (cl:export '#.(swig-lispify "camera_lookat" 'function))
 
 (cffi:defcfun ("create_entity" #.(swig-lispify "create_entity" 'function)) :pointer
+  (scene_manager_handle :pointer)
   (entity_name :string)
   (mesh_file :string))
 
 (cl:export '#.(swig-lispify "create_entity" 'function))
 
 (cffi:defcfun ("entity_set_material_name" #.(swig-lispify "entity_set_material_name" 'function)) :void
-  (handle :pointer)
-  (name :string)
-  (group_name :string))
+  (entity_handle :pointer)
+  (name :string))
 
 (cl:export '#.(swig-lispify "entity_set_material_name" 'function))
 
-(cffi:defcfun ("create_light" #.(swig-lispify "create_light" 'function)) :pointer
-  (light_name :string))
+(cffi:defcfun ("entity_set_material_name_and_group" #.(swig-lispify "entity_set_material_name_and_group" 'function)) :void
+  (entity_handle :pointer)
+  (name :string)
+  (group_name :string))
 
-(cl:export '#.(swig-lispify "create_light" 'function))
-
-(cffi:defcfun ("light_set_position" #.(swig-lispify "light_set_position" 'function)) :void
-  (handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "light_set_position" 'function))
-
-(cffi:defcfun ("light_set_diffuse_colour" #.(swig-lispify "light_set_diffuse_colour" 'function)) :void
-  (handle :pointer)
-  (r :float)
-  (g :float)
-  (b :float))
-
-(cl:export '#.(swig-lispify "light_set_diffuse_colour" 'function))
-
-(cffi:defcfun ("light_set_specular_colour" #.(swig-lispify "light_set_specular_colour" 'function)) :void
-  (handle :pointer)
-  (r :float)
-  (g :float)
-  (b :float))
-
-(cl:export '#.(swig-lispify "light_set_specular_colour" 'function))
-
-(cffi:defcfun ("light_set_direction" #.(swig-lispify "light_set_direction" 'function)) :void
-  (handle :pointer)
-  (x :float)
-  (y :float)
-  (z :float))
-
-(cl:export '#.(swig-lispify "light_set_direction" 'function))
-
-(cffi:defcfun ("light_set_spotlight_range" #.(swig-lispify "light_set_spotlight_range" 'function)) :void
-  (handle :pointer)
-  (inner_angle :float)
-  (outer_angle :float)
-  (falloff :float))
-
-(cl:export '#.(swig-lispify "light_set_spotlight_range" 'function))
-
-(cffi:defcfun ("light_set_power_scale" #.(swig-lispify "light_set_power_scale" 'function)) :void
-  (handle :pointer)
-  (power :float))
-
-(cl:export '#.(swig-lispify "light_set_power_scale" 'function))
-
-(cffi:defcfun ("light_get_power_scale" #.(swig-lispify "light_get_power_scale" 'function)) :float
-  (handle :pointer))
-
-(cl:export '#.(swig-lispify "light_get_power_scale" 'function))
-
-(cffi:defcfun ("light_set_attenuation" #.(swig-lispify "light_set_attenuation" 'function)) :void
-  (handle :pointer)
-  (range :float)
-  (constant :float)
-  (linear :float)
-  (quadratic :float))
-
-(cl:export '#.(swig-lispify "light_set_attenuation" 'function))
+(cl:export '#.(swig-lispify "entity_set_material_name_and_group" 'function))
 
 (cffi:defcfun ("add_frame_listener" #.(swig-lispify "add_frame_listener" 'function)) :void
   (frame_event :pointer)
@@ -600,16 +305,321 @@
 
 (cl:export '#.(swig-lispify "remove_frame_listener" 'function))
 
-(cffi:defcfun ("add_window_listener" #.(swig-lispify "add_window_listener" 'function)) :void
-  (window_handle :pointer)
-  (window_event :pointer))
+(cffi:defcfun ("create_image" #.(swig-lispify "create_image" 'function)) :pointer)
 
-(cl:export '#.(swig-lispify "add_window_listener" 'function))
+(cl:export '#.(swig-lispify "create_image" 'function))
 
-(cffi:defcfun ("remove_window_listener" #.(swig-lispify "remove_window_listener" 'function)) :void
-  (window_handle :pointer))
+(cffi:defcfun ("image_load" #.(swig-lispify "image_load" 'function)) :void
+  (image_handle :pointer)
+  (filename :string))
 
-(cl:export '#.(swig-lispify "remove_window_listener" 'function))
+(cl:export '#.(swig-lispify "image_load" 'function))
+
+(cffi:defcfun ("image_load_group" #.(swig-lispify "image_load_group" 'function)) :void
+  (image_handle :pointer)
+  (filename :string)
+  (group :string))
+
+(cl:export '#.(swig-lispify "image_load_group" 'function))
+
+(cffi:defcfun ("image_flip_around_x" #.(swig-lispify "image_flip_around_x" 'function)) :void
+  (image_handle :pointer))
+
+(cl:export '#.(swig-lispify "image_flip_around_x" 'function))
+
+(cffi:defcfun ("image_flip_around_y" #.(swig-lispify "image_flip_around_y" 'function)) :void
+  (image_handle :pointer))
+
+(cl:export '#.(swig-lispify "image_flip_around_y" 'function))
+
+(cffi:defcfun ("image_delete" #.(swig-lispify "image_delete" 'function)) :void
+  (image_handle :pointer))
+
+(cl:export '#.(swig-lispify "image_delete" 'function))
+
+(cffi:defcfun ("create_light" #.(swig-lispify "create_light" 'function)) :pointer
+  (scene_manager_handle :pointer)
+  (light_name :string))
+
+(cl:export '#.(swig-lispify "create_light" 'function))
+
+(cffi:defcfun ("light_set_position" #.(swig-lispify "light_set_position" 'function)) :void
+  (light_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "light_set_position" 'function))
+
+(cffi:defcfun ("light_set_diffuse_colour" #.(swig-lispify "light_set_diffuse_colour" 'function)) :void
+  (light_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "light_set_diffuse_colour" 'function))
+
+(cffi:defcfun ("light_get_diffuse_colour" #.(swig-lispify "light_get_diffuse_colour" 'function)) #.(swig-lispify "coiColourValue" 'classname)
+  (light_handle :pointer))
+
+(cl:export '#.(swig-lispify "light_get_diffuse_colour" 'function))
+
+(cffi:defcfun ("light_set_specular_colour" #.(swig-lispify "light_set_specular_colour" 'function)) :void
+  (light_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "light_set_specular_colour" 'function))
+
+(cffi:defcfun ("light_set_direction" #.(swig-lispify "light_set_direction" 'function)) :void
+  (light_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "light_set_direction" 'function))
+
+(cffi:defcfun ("light_set_spotlight_range" #.(swig-lispify "light_set_spotlight_range" 'function)) :void
+  (light_handle :pointer)
+  (inner_angle :float)
+  (outer_angle :float)
+  (falloff :float))
+
+(cl:export '#.(swig-lispify "light_set_spotlight_range" 'function))
+
+(cffi:defcfun ("light_set_power_scale" #.(swig-lispify "light_set_power_scale" 'function)) :void
+  (light_handle :pointer)
+  (power :float))
+
+(cl:export '#.(swig-lispify "light_set_power_scale" 'function))
+
+(cffi:defcfun ("light_get_power_scale" #.(swig-lispify "light_get_power_scale" 'function)) :float
+  (light_handle :pointer))
+
+(cl:export '#.(swig-lispify "light_get_power_scale" 'function))
+
+(cffi:defcfun ("light_set_attenuation" #.(swig-lispify "light_set_attenuation" 'function)) :void
+  (light_handle :pointer)
+  (range :float)
+  (constant :float)
+  (linear :float)
+  (quadratic :float))
+
+(cl:export '#.(swig-lispify "light_set_attenuation" 'function))
+
+(cffi:defcfun ("light_get_derived_direction" #.(swig-lispify "light_get_derived_direction" 'function)) #.(swig-lispify "coiVector3" 'classname)
+  (light_handle :pointer))
+
+(cl:export '#.(swig-lispify "light_get_derived_direction" 'function))
+
+(cffi:defcfun ("create_manual_object" #.(swig-lispify "create_manual_object" 'function)) :pointer
+  (scene_manager_handle :pointer)
+  (name :string))
+
+(cl:export '#.(swig-lispify "create_manual_object" 'function))
+
+(cffi:defcfun ("manual_object_delete" #.(swig-lispify "manual_object_delete" 'function)) :void
+  (manual_object_handle :pointer))
+
+(cl:export '#.(swig-lispify "manual_object_delete" 'function))
+
+(cffi:defcfun ("manual_object_clear" #.(swig-lispify "manual_object_clear" 'function)) :void
+  (manual_object_handle :pointer))
+
+(cl:export '#.(swig-lispify "manual_object_clear" 'function))
+
+(cffi:defcfun ("manual_object_estimate_vertex_count" #.(swig-lispify "manual_object_estimate_vertex_count" 'function)) :void
+  (manual_object_handle :pointer)
+  (vcount :int))
+
+(cl:export '#.(swig-lispify "manual_object_estimate_vertex_count" 'function))
+
+(cffi:defcfun ("manual_object_estimate_index_count" #.(swig-lispify "manual_object_estimate_index_count" 'function)) :void
+  (manual_object_handle :pointer)
+  (icount :int))
+
+(cl:export '#.(swig-lispify "manual_object_estimate_index_count" 'function))
+
+(cffi:defcfun ("manual_object_begin" #.(swig-lispify "manual_object_begin" 'function)) :void
+  (manual_object_handle :pointer)
+  (material_name :string)
+  (render_operation :int)
+  (resource_group_name :string))
+
+(cl:export '#.(swig-lispify "manual_object_begin" 'function))
+
+(cffi:defcfun ("manual_object_set_dynamic" #.(swig-lispify "manual_object_set_dynamic" 'function)) :void
+  (manual_object_handle :pointer)
+  (dyn :int))
+
+(cl:export '#.(swig-lispify "manual_object_set_dynamic" 'function))
+
+(cffi:defcfun ("manual_object_get_dynamic" #.(swig-lispify "manual_object_get_dynamic" 'function)) :int
+  (manual_object_handle :pointer))
+
+(cl:export '#.(swig-lispify "manual_object_get_dynamic" 'function))
+
+(cffi:defcfun ("manual_object_begin_update" #.(swig-lispify "manual_object_begin_update" 'function)) :void
+  (manual_object_handle :pointer)
+  (section_index :int))
+
+(cl:export '#.(swig-lispify "manual_object_begin_update" 'function))
+
+(cffi:defcfun ("manual_object_position" #.(swig-lispify "manual_object_position" 'function)) :void
+  (manual_object_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "manual_object_position" 'function))
+
+(cffi:defcfun ("manual_object_normal" #.(swig-lispify "manual_object_normal" 'function)) :void
+  (manual_object_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "manual_object_normal" 'function))
+
+(cffi:defcfun ("manual_object_tangent" #.(swig-lispify "manual_object_tangent" 'function)) :void
+  (manual_object_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "manual_object_tangent" 'function))
+
+(cffi:defcfun ("manual_object_texture_coord_u" #.(swig-lispify "manual_object_texture_coord_u" 'function)) :void
+  (manual_object_handle :pointer)
+  (u :float))
+
+(cl:export '#.(swig-lispify "manual_object_texture_coord_u" 'function))
+
+(cffi:defcfun ("manual_object_texture_coord_uv" #.(swig-lispify "manual_object_texture_coord_uv" 'function)) :void
+  (manual_object_handle :pointer)
+  (u :float)
+  (v :float))
+
+(cl:export '#.(swig-lispify "manual_object_texture_coord_uv" 'function))
+
+(cffi:defcfun ("manual_object_texture_coord_uvw" #.(swig-lispify "manual_object_texture_coord_uvw" 'function)) :void
+  (manual_object_handle :pointer)
+  (u :float)
+  (v :float)
+  (w :float))
+
+(cl:export '#.(swig-lispify "manual_object_texture_coord_uvw" 'function))
+
+(cffi:defcfun ("manual_object_texture_coord_xyzw" #.(swig-lispify "manual_object_texture_coord_xyzw" 'function)) :void
+  (manual_object_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float)
+  (w :float))
+
+(cl:export '#.(swig-lispify "manual_object_texture_coord_xyzw" 'function))
+
+(cffi:defcfun ("manual_object_colour" #.(swig-lispify "manual_object_colour" 'function)) :void
+  (manual_object_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float)
+  (a :float))
+
+(cl:export '#.(swig-lispify "manual_object_colour" 'function))
+
+(cffi:defcfun ("manual_object_index" #.(swig-lispify "manual_object_index" 'function)) :void
+  (manual_object_handle :pointer)
+  (idx :unsigned-int))
+
+(cl:export '#.(swig-lispify "manual_object_index" 'function))
+
+(cffi:defcfun ("manual_object_triangle" #.(swig-lispify "manual_object_triangle" 'function)) :void
+  (manual_object_handle :pointer)
+  (i1 :unsigned-int)
+  (i2 :unsigned-int)
+  (i3 :unsigned-int))
+
+(cl:export '#.(swig-lispify "manual_object_triangle" 'function))
+
+(cffi:defcfun ("manual_object_quad" #.(swig-lispify "manual_object_quad" 'function)) :void
+  (manual_object_handle :pointer)
+  (i1 :unsigned-int)
+  (i2 :unsigned-int)
+  (i3 :unsigned-int)
+  (i4 :unsigned-int))
+
+(cl:export '#.(swig-lispify "manual_object_quad" 'function))
+
+(cffi:defcfun ("manual_object_end" #.(swig-lispify "manual_object_end" 'function)) :pointer
+  (manual_object_handle :pointer))
+
+(cl:export '#.(swig-lispify "manual_object_end" 'function))
+
+(cffi:defcfun ("manual_object_set_material_name" #.(swig-lispify "manual_object_set_material_name" 'function)) :void
+  (manual_object_handle :pointer)
+  (sub_index :int)
+  (name :string)
+  (resource_group_name :string))
+
+(cl:export '#.(swig-lispify "manual_object_set_material_name" 'function))
+
+(cffi:defcfun ("math_clamp_f" #.(swig-lispify "math_clamp_f" 'function)) :float
+  (value :float)
+  (min :float)
+  (max :float))
+
+(cl:export '#.(swig-lispify "math_clamp_f" 'function))
+
+(cffi:defcfun ("multiply_quaternion_with_quaternion" #.(swig-lispify "multiply_quaternion_with_quaternion" 'function)) :void
+  (quat1_handle :pointer)
+  (quat2_handle :pointer)
+  (quaternion_output_handle :pointer))
+
+(cl:export '#.(swig-lispify "multiply_quaternion_with_quaternion" 'function))
+
+(cffi:defcfun ("multiply_quaternion_with_vector3" #.(swig-lispify "multiply_quaternion_with_vector3" 'function)) :void
+  (quat_handle :pointer)
+  (vector_handle :pointer)
+  (vector_output_handle :pointer))
+
+(cl:export '#.(swig-lispify "multiply_quaternion_with_vector3" 'function))
+
+(cffi:defcfun ("multiply_vector3_with_vector3" #.(swig-lispify "multiply_vector3_with_vector3" 'function)) :void
+  (vector1_handle :pointer)
+  (vector2_handle :pointer)
+  (vector_output_handle :pointer))
+
+(cl:export '#.(swig-lispify "multiply_vector3_with_vector3" 'function))
+
+(cffi:defcfun ("get_mesh_manager" #.(swig-lispify "get_mesh_manager" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "get_mesh_manager" 'function))
+
+(cffi:defcfun ("mesh_manager_create_plane" #.(swig-lispify "mesh_manager_create_plane" 'function)) :void
+  (name :string)
+  (group_name :string)
+  (plane_handle :pointer)
+  (width :float)
+  (height :float)
+  (xsegments :int)
+  (ysegments :int)
+  (normals :int)
+  (num_tex_coord_sets :unsigned-short)
+  (u_tile :float)
+  (v_tile :float)
+  (upvector_x :float)
+  (upvector_y :float)
+  (upvector_z :float))
+
+(cl:export '#.(swig-lispify "mesh_manager_create_plane" 'function))
+
+(cffi:defcfun ("movable_object_set_cast_shadows" #.(swig-lispify "movable_object_set_cast_shadows" 'function)) :void
+  (movable_object_handle :pointer)
+  (cast_shadows :int))
+
+(cl:export '#.(swig-lispify "movable_object_set_cast_shadows" 'function))
 
 (cffi:defcfun ("create_plane" #.(swig-lispify "create_plane" 'function)) :pointer
   (a :float)
@@ -627,33 +637,112 @@
 
 (cl:export '#.(swig-lispify "create_plane_from_normal" 'function))
 
-(cffi:defcfun ("mesh_manager_get" #.(swig-lispify "mesh_manager_get" 'function)) :pointer)
+(cffi:defcfun ("get_render_system" #.(swig-lispify "get_render_system" 'function)) :pointer)
 
-(cl:export '#.(swig-lispify "mesh_manager_get" 'function))
+(cl:export '#.(swig-lispify "get_render_system" 'function))
 
-(cffi:defcfun ("mesh_manager_create_plane" #.(swig-lispify "mesh_manager_create_plane" 'function)) :void
+(cffi:defcfun ("get_render_system_by_name" #.(swig-lispify "get_render_system_by_name" 'function)) :pointer
+  (render_system_name :string))
+
+(cl:export '#.(swig-lispify "get_render_system_by_name" 'function))
+
+(cffi:defcfun ("add_render_system" #.(swig-lispify "add_render_system" 'function)) :void
+  (render_system :pointer))
+
+(cl:export '#.(swig-lispify "add_render_system" 'function))
+
+(cffi:defcfun ("set_render_system" #.(swig-lispify "set_render_system" 'function)) :void
+  (render_system :pointer))
+
+(cl:export '#.(swig-lispify "set_render_system" 'function))
+
+(cffi:defcfun ("render_system_set_config_option" #.(swig-lispify "render_system_set_config_option" 'function)) :void
+  (render_system_handle :pointer)
+  (option :string)
+  (value :string))
+
+(cl:export '#.(swig-lispify "render_system_set_config_option" 'function))
+
+(cffi:defcfun ("create_render_window" #.(swig-lispify "create_render_window" 'function)) :pointer
   (name :string)
-  (group_name :string)
-  (plane :pointer)
-  (width :float)
-  (height :float)
-  (xsegments :int)
-  (ysegments :int)
-  (normals :int)
-  (num_tex_coord_sets :unsigned-short)
-  (u_tile :float)
-  (v_tile :float)
-  (upvector_x :float)
-  (upvector_y :float)
-  (upvector_z :float))
+  (width :int)
+  (height :int)
+  (full_screen :int))
 
-(cl:export '#.(swig-lispify "mesh_manager_create_plane" 'function))
+(cl:export '#.(swig-lispify "create_render_window" 'function))
 
-(cffi:defcfun ("movable_object_set_cast_shadows" #.(swig-lispify "movable_object_set_cast_shadows" 'function)) :void
-  (handle :pointer)
-  (cast_shadows :int))
+(cffi:defcfun ("create_render_window_gl_context" #.(swig-lispify "create_render_window_gl_context" 'function)) :pointer
+  (name :string)
+  (width :int)
+  (height :int)
+  (full_screen :int))
 
-(cl:export '#.(swig-lispify "movable_object_set_cast_shadows" 'function))
+(cl:export '#.(swig-lispify "create_render_window_gl_context" 'function))
+
+(cffi:defcfun ("create_render_window_hwnd" #.(swig-lispify "create_render_window_hwnd" 'function)) :pointer
+  (name :string)
+  (width :int)
+  (height :int)
+  (full_screen :int)
+  (hwnd :unsigned-long))
+
+(cl:export '#.(swig-lispify "create_render_window_hwnd" 'function))
+
+(cffi:defcfun ("render_window_get_hwnd" #.(swig-lispify "render_window_get_hwnd" 'function)) :unsigned-int
+  (render_window_handle :pointer))
+
+(cl:export '#.(swig-lispify "render_window_get_hwnd" 'function))
+
+(cffi:defcfun ("render_window_set_visible" #.(swig-lispify "render_window_set_visible" 'function)) :void
+  (render_window_handle :pointer)
+  (visible :int))
+
+(cl:export '#.(swig-lispify "render_window_set_visible" 'function))
+
+(cffi:defcfun ("render_window_update" #.(swig-lispify "render_window_update" 'function)) :void
+  (render_window_handle :pointer)
+  (swap_buffers :int))
+
+(cl:export '#.(swig-lispify "render_window_update" 'function))
+
+(cffi:defcfun ("render_window_resize" #.(swig-lispify "render_window_resize" 'function)) :void
+  (render_window_handle :pointer)
+  (width :unsigned-int)
+  (height :unsigned-int))
+
+(cl:export '#.(swig-lispify "render_window_resize" 'function))
+
+(cffi:defcfun ("render_window_moved_or_resized" #.(swig-lispify "render_window_moved_or_resized" 'function)) :void
+  (render_window_handle :pointer))
+
+(cl:export '#.(swig-lispify "render_window_moved_or_resized" 'function))
+
+(cffi:defcfun ("render_window_closed" #.(swig-lispify "render_window_closed" 'function)) :int
+  (render_window_handle :pointer))
+
+(cl:export '#.(swig-lispify "render_window_closed" 'function))
+
+(cffi:defcfun ("setup_resources" #.(swig-lispify "setup_resources" 'function)) :void
+  (resources_cfg :string))
+
+(cl:export '#.(swig-lispify "setup_resources" 'function))
+
+(cffi:defcfun ("add_resource_location" #.(swig-lispify "add_resource_location" 'function)) :void
+  (location :string)
+  (type :string)
+  (group :string))
+
+(cl:export '#.(swig-lispify "add_resource_location" 'function))
+
+(cffi:defcfun ("initialise_all_resource_groups" #.(swig-lispify "initialise_all_resource_groups" 'function)) :void)
+
+(cl:export '#.(swig-lispify "initialise_all_resource_groups" 'function))
+
+(cffi:defcfun ("resource_exists" #.(swig-lispify "resource_exists" 'function)) :int
+  (group :string)
+  (name :string))
+
+(cl:export '#.(swig-lispify "resource_exists" 'function))
 
 (cffi:defcfun ("release_engine" #.(swig-lispify "release_engine" 'function)) :void)
 
@@ -682,67 +771,6 @@
 
 (cl:export '#.(swig-lispify "root_initialise" 'function))
 
-(cffi:defcfun ("create_render_window" #.(swig-lispify "create_render_window" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int))
-
-(cl:export '#.(swig-lispify "create_render_window" 'function))
-
-(cffi:defcfun ("create_render_window_gl_context" #.(swig-lispify "create_render_window_gl_context" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int))
-
-(cl:export '#.(swig-lispify "create_render_window_gl_context" 'function))
-
-(cffi:defcfun ("create_render_window_hwnd" #.(swig-lispify "create_render_window_hwnd" 'function)) :pointer
-  (name :string)
-  (width :int)
-  (height :int)
-  (full_screen :int)
-  (hwnd :unsigned-long))
-
-(cl:export '#.(swig-lispify "create_render_window_hwnd" 'function))
-
-(cffi:defcfun ("render_window_get_hwnd" #.(swig-lispify "render_window_get_hwnd" 'function)) :unsigned-int
-  (window_handle :pointer))
-
-(cl:export '#.(swig-lispify "render_window_get_hwnd" 'function))
-
-(cffi:defcfun ("render_window_set_visible" #.(swig-lispify "render_window_set_visible" 'function)) :void
-  (window_handle :pointer)
-  (visible :int))
-
-(cl:export '#.(swig-lispify "render_window_set_visible" 'function))
-
-(cffi:defcfun ("render_window_update" #.(swig-lispify "render_window_update" 'function)) :void
-  (window_handle :pointer)
-  (swap_buffers :int))
-
-(cl:export '#.(swig-lispify "render_window_update" 'function))
-
-(cffi:defcfun ("current_window_update" #.(swig-lispify "current_window_update" 'function)) :void
-  (swap_buffers :int))
-
-(cl:export '#.(swig-lispify "current_window_update" 'function))
-
-(cffi:defcfun ("render_window_resize" #.(swig-lispify "render_window_resize" 'function)) :void
-  (width :unsigned-int)
-  (height :unsigned-int))
-
-(cl:export '#.(swig-lispify "render_window_resize" 'function))
-
-(cffi:defcfun ("render_window_moved_or_resized" #.(swig-lispify "render_window_moved_or_resized" 'function)) :void)
-
-(cl:export '#.(swig-lispify "render_window_moved_or_resized" 'function))
-
-(cffi:defcfun ("render_window_closed" #.(swig-lispify "render_window_closed" 'function)) :int)
-
-(cl:export '#.(swig-lispify "render_window_closed" 'function))
-
 (cffi:defcfun ("root_is_initialised" #.(swig-lispify "root_is_initialised" 'function)) :int)
 
 (cl:export '#.(swig-lispify "root_is_initialised" 'function))
@@ -759,44 +787,10 @@
 
 (cl:export '#.(swig-lispify "show_config_dialog" 'function))
 
-(cffi:defcfun ("add_render_system" #.(swig-lispify "add_render_system" 'function)) :void
-  (render_system :pointer))
-
-(cl:export '#.(swig-lispify "add_render_system" 'function))
-
-(cffi:defcfun ("set_render_system" #.(swig-lispify "set_render_system" 'function)) :void
-  (render_system :pointer))
-
-(cl:export '#.(swig-lispify "set_render_system" 'function))
-
-(cffi:defcfun ("get_render_system" #.(swig-lispify "get_render_system" 'function)) :pointer)
-
-(cl:export '#.(swig-lispify "get_render_system" 'function))
-
-(cffi:defcfun ("get_render_system_by_name" #.(swig-lispify "get_render_system_by_name" 'function)) :pointer
-  (render_system_name :string))
-
-(cl:export '#.(swig-lispify "get_render_system_by_name" 'function))
-
 (cffi:defcfun ("load_ogre_plugin" #.(swig-lispify "load_ogre_plugin" 'function)) :void
   (plugin :string))
 
 (cl:export '#.(swig-lispify "load_ogre_plugin" 'function))
-
-(cffi:defcfun ("create_scene_manager" #.(swig-lispify "create_scene_manager" 'function)) :pointer
-  (type_name :string)
-  (instance_name :string))
-
-(cl:export '#.(swig-lispify "create_scene_manager" 'function))
-
-(cffi:defcfun ("get_scene_manager" #.(swig-lispify "get_scene_manager" 'function)) :pointer)
-
-(cl:export '#.(swig-lispify "get_scene_manager" 'function))
-
-(cffi:defcfun ("get_scene_manager_by_name" #.(swig-lispify "get_scene_manager_by_name" 'function)) :pointer
-  (scene_manager_instance_name :string))
-
-(cl:export '#.(swig-lispify "get_scene_manager_by_name" 'function))
 
 (cffi:defcfun ("render_one_frame" #.(swig-lispify "render_one_frame" 'function)) :int)
 
@@ -819,38 +813,634 @@
 
 (cl:export '#.(swig-lispify "pump_messages" 'function))
 
-(cffi:defcfun ("render_system_set_config_option" #.(swig-lispify "render_system_set_config_option" 'function)) :void
-  (render_system_handle :pointer)
-  (option :string)
-  (value :string))
-
-(cl:export '#.(swig-lispify "render_system_set_config_option" 'function))
-
 (cffi:defcfun ("log_message" #.(swig-lispify "log_message" 'function)) :void
   (message :string))
 
 (cl:export '#.(swig-lispify "log_message" 'function))
 
-(cffi:defcstruct #.(swig-lispify "InputSystemHandle__" 'classname)
-	(#.(swig-lispify "unused" 'slotname) :int))
+(cffi:defcfun ("set_default_num_mipmaps" #.(swig-lispify "set_default_num_mipmaps" 'function)) :void
+  (number :int))
 
-(cl:export '#.(swig-lispify "InputSystemHandle__" 'classname))
+(cl:export '#.(swig-lispify "set_default_num_mipmaps" 'function))
 
-(cl:export '#.(swig-lispify "unused" 'slotname))
+(cffi:defcfun ("scene_manager_log_name" #.(swig-lispify "scene_manager_log_name" 'function)) :void)
 
-(cffi:defcstruct #.(swig-lispify "MouseInputHandle__" 'classname)
-	(#.(swig-lispify "unused" 'slotname) :int))
+(cl:export '#.(swig-lispify "scene_manager_log_name" 'function))
 
-(cl:export '#.(swig-lispify "MouseInputHandle__" 'classname))
+(cffi:defcfun ("create_scene_manager" #.(swig-lispify "create_scene_manager" 'function)) :pointer
+  (type_name :string)
+  (instance_name :string))
 
-(cl:export '#.(swig-lispify "unused" 'slotname))
+(cl:export '#.(swig-lispify "create_scene_manager" 'function))
 
-(cffi:defcstruct #.(swig-lispify "KeyboardInputHandle__" 'classname)
-	(#.(swig-lispify "unused" 'slotname) :int))
+(cffi:defcfun ("get_scene_manager" #.(swig-lispify "get_scene_manager" 'function)) :pointer)
 
-(cl:export '#.(swig-lispify "KeyboardInputHandle__" 'classname))
+(cl:export '#.(swig-lispify "get_scene_manager" 'function))
 
-(cl:export '#.(swig-lispify "unused" 'slotname))
+(cffi:defcfun ("get_scene_manager_by_name" #.(swig-lispify "get_scene_manager_by_name" 'function)) :pointer
+  (scene_manager_instance_name :string))
+
+(cl:export '#.(swig-lispify "get_scene_manager_by_name" 'function))
+
+(cffi:defcfun ("scene_manager_set_ambient_light_rgba" #.(swig-lispify "scene_manager_set_ambient_light_rgba" 'function)) :void
+  (scene_manager_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float)
+  (a :float))
+
+(cl:export '#.(swig-lispify "scene_manager_set_ambient_light_rgba" 'function))
+
+(cffi:defcfun ("scene_manager_set_ambient_light_rgb" #.(swig-lispify "scene_manager_set_ambient_light_rgb" 'function)) :void
+  (scene_manager_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "scene_manager_set_ambient_light_rgb" 'function))
+
+(cffi:defcfun ("scene_manager_get_ambient_light" #.(swig-lispify "scene_manager_get_ambient_light" 'function)) #.(swig-lispify "coiColourValue" 'classname)
+  (scene_manager_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_manager_get_ambient_light" 'function))
+
+(cffi:defcfun ("scene_manager_set_shadow_technique" #.(swig-lispify "scene_manager_set_shadow_technique" 'function)) :void
+  (scene_manager_handle :pointer)
+  (technique :int))
+
+(cl:export '#.(swig-lispify "scene_manager_set_shadow_technique" 'function))
+
+(cffi:defcfun ("scene_manager_get_shadow_technique" #.(swig-lispify "scene_manager_get_shadow_technique" 'function)) :void
+  (scene_manager_handle :pointer)
+  (technique :int))
+
+(cl:export '#.(swig-lispify "scene_manager_get_shadow_technique" 'function))
+
+(cffi:defcfun ("scene_manager_get_root_scene_node" #.(swig-lispify "scene_manager_get_root_scene_node" 'function)) :pointer
+  (scene_manager_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_manager_get_root_scene_node" 'function))
+
+(cffi:defcfun ("create_child_scene_node" #.(swig-lispify "create_child_scene_node" 'function)) :pointer
+  (scene_manager_handle :pointer)
+  (node_name :string))
+
+(cl:export '#.(swig-lispify "create_child_scene_node" 'function))
+
+(cffi:defcfun ("scene_node_attach_entity" #.(swig-lispify "scene_node_attach_entity" 'function)) :void
+  (scene_node_handle :pointer)
+  (entity_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_attach_entity" 'function))
+
+(cffi:defcfun ("scene_node_update" #.(swig-lispify "scene_node_update" 'function)) :void
+  (scene_node_handle :pointer)
+  (update_children :int)
+  (parent_has_changed :int))
+
+(cl:export '#.(swig-lispify "scene_node_update" 'function))
+
+(cffi:defcfun ("scene_node_update_bounds" #.(swig-lispify "scene_node_update_bounds" 'function)) :void
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_update_bounds" 'function))
+
+(cffi:defcfun ("scene_node_get_attached_entity_int" #.(swig-lispify "scene_node_get_attached_entity_int" 'function)) :pointer
+  (scene_node_handle :pointer)
+  (entity_index :int))
+
+(cl:export '#.(swig-lispify "scene_node_get_attached_entity_int" 'function))
+
+(cffi:defcfun ("scene_node_get_attached_entity" #.(swig-lispify "scene_node_get_attached_entity" 'function)) :pointer
+  (scene_node_handle :pointer)
+  (entity_name :string))
+
+(cl:export '#.(swig-lispify "scene_node_get_attached_entity" 'function))
+
+(cffi:defcfun ("scene_node_num_attached_objects" #.(swig-lispify "scene_node_num_attached_objects" 'function)) :int
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_num_attached_objects" 'function))
+
+(cffi:defcfun ("scene_node_detach_entity_int" #.(swig-lispify "scene_node_detach_entity_int" 'function)) :void
+  (scene_node_handle :pointer)
+  (entity_index :int))
+
+(cl:export '#.(swig-lispify "scene_node_detach_entity_int" 'function))
+
+(cffi:defcfun ("scene_node_detach_entity" #.(swig-lispify "scene_node_detach_entity" 'function)) :void
+  (scene_node_handle :pointer)
+  (entity_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_detach_entity" 'function))
+
+(cffi:defcfun ("scene_node_detach_entity_string" #.(swig-lispify "scene_node_detach_entity_string" 'function)) :void
+  (scene_node_handle :pointer)
+  (entity_name :string))
+
+(cl:export '#.(swig-lispify "scene_node_detach_entity_string" 'function))
+
+(cffi:defcfun ("scene_node_detach_all_objects" #.(swig-lispify "scene_node_detach_all_objects" 'function)) :void
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_detach_all_objects" 'function))
+
+(cffi:defcfun ("scene_node_is_in_scenegraph" #.(swig-lispify "scene_node_is_in_scenegraph" 'function)) :int
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_is_in_scenegraph" 'function))
+
+(cffi:defcfun ("scene_node_notify_root_node" #.(swig-lispify "scene_node_notify_root_node" 'function)) :void
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_notify_root_node" 'function))
+
+(cffi:defcfun ("scene_node_show_bounding_box" #.(swig-lispify "scene_node_show_bounding_box" 'function)) :void
+  (scene_node_handle :pointer)
+  (show_boundingbox :int))
+
+(cl:export '#.(swig-lispify "scene_node_show_bounding_box" 'function))
+
+(cffi:defcfun ("scene_node_hide_bounding_box" #.(swig-lispify "scene_node_hide_bounding_box" 'function)) :void
+  (scene_node_handle :pointer)
+  (hide_boundingbox :int))
+
+(cl:export '#.(swig-lispify "scene_node_hide_bounding_box" 'function))
+
+(cffi:defcfun ("scene_node_get_show_bounding_box" #.(swig-lispify "scene_node_get_show_bounding_box" 'function)) :int
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_get_show_bounding_box" 'function))
+
+(cffi:defcfun ("scene_node_get_parent_scene_node" #.(swig-lispify "scene_node_get_parent_scene_node" 'function)) :pointer
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_get_parent_scene_node" 'function))
+
+(cffi:defcfun ("scene_node_set_visible" #.(swig-lispify "scene_node_set_visible" 'function)) :void
+  (scene_node_handle :pointer)
+  (visible :int))
+
+(cl:export '#.(swig-lispify "scene_node_set_visible" 'function))
+
+(cffi:defcfun ("scene_node_set_visible_cascade" #.(swig-lispify "scene_node_set_visible_cascade" 'function)) :void
+  (scene_node_handle :pointer)
+  (visible :int)
+  (cascade :int))
+
+(cl:export '#.(swig-lispify "scene_node_set_visible_cascade" 'function))
+
+(cffi:defcfun ("scene_node_flip_visibility" #.(swig-lispify "scene_node_flip_visibility" 'function)) :void
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_flip_visibility" 'function))
+
+(cffi:defcfun ("scene_node_flip_visibility_cascade" #.(swig-lispify "scene_node_flip_visibility_cascade" 'function)) :void
+  (scene_node_handle :pointer)
+  (cascade :int))
+
+(cl:export '#.(swig-lispify "scene_node_flip_visibility_cascade" 'function))
+
+(cffi:defcfun ("scene_node_set_debug_display_enabled" #.(swig-lispify "scene_node_set_debug_display_enabled" 'function)) :void
+  (scene_node_handle :pointer)
+  (enabled :int))
+
+(cl:export '#.(swig-lispify "scene_node_set_debug_display_enabled" 'function))
+
+(cffi:defcfun ("scene_node_set_debug_display_enabled_cascade" #.(swig-lispify "scene_node_set_debug_display_enabled_cascade" 'function)) :void
+  (scene_node_handle :pointer)
+  (enabled :int)
+  (cascade :int))
+
+(cl:export '#.(swig-lispify "scene_node_set_debug_display_enabled_cascade" 'function))
+
+(cffi:defcfun ("scene_node_get_creator" #.(swig-lispify "scene_node_get_creator" 'function)) :pointer
+  (scene_node_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_get_creator" 'function))
+
+(cffi:defcfun ("scene_node_set_direction" #.(swig-lispify "scene_node_set_direction" 'function)) :void
+  (scene_node_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_set_direction" 'function))
+
+(cffi:defcfun ("scene_node_set_orientation" #.(swig-lispify "scene_node_set_orientation" 'function)) :void
+  (scene_node_handle :pointer)
+  (w :float)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_set_orientation" 'function))
+
+(cffi:defcfun ("scene_node_get_orientation" #.(swig-lispify "scene_node_get_orientation" 'function)) :void
+  (scene_node_handle :pointer)
+  (quaternion_output_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_get_orientation" 'function))
+
+(cffi:defcfun ("scene_node_set_position" #.(swig-lispify "scene_node_set_position" 'function)) :void
+  (scene_node_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_set_position" 'function))
+
+(cffi:defcfun ("scene_node_yaw" #.(swig-lispify "scene_node_yaw" 'function)) :void
+  (scene_node_handle :pointer)
+  (radians :float))
+
+(cl:export '#.(swig-lispify "scene_node_yaw" 'function))
+
+(cffi:defcfun ("scene_node_set_scale" #.(swig-lispify "scene_node_set_scale" 'function)) :void
+  (scene_node_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_set_scale" 'function))
+
+(cffi:defcfun ("scene_node_scale" #.(swig-lispify "scene_node_scale" 'function)) :void
+  (scene_node_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_scale" 'function))
+
+(cffi:defcfun ("scene_node_translate" #.(swig-lispify "scene_node_translate" 'function)) :void
+  (scene_node_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_translate" 'function))
+
+(cffi:defcfun ("scene_node_roll" #.(swig-lispify "scene_node_roll" 'function)) :void
+  (scene_node_handle :pointer)
+  (radians :float))
+
+(cl:export '#.(swig-lispify "scene_node_roll" 'function))
+
+(cffi:defcfun ("scene_node_pitch" #.(swig-lispify "scene_node_pitch" 'function)) :void
+  (scene_node_handle :pointer)
+  (radians :float))
+
+(cl:export '#.(swig-lispify "scene_node_pitch" 'function))
+
+(cffi:defcfun ("scene_node_remove_child" #.(swig-lispify "scene_node_remove_child" 'function)) :void
+  (scene_node_handle :pointer)
+  (child_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_remove_child" 'function))
+
+(cffi:defcfun ("scene_node_add_child" #.(swig-lispify "scene_node_add_child" 'function)) :void
+  (scene_node_handle :pointer)
+  (child_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_add_child" 'function))
+
+(cffi:defcfun ("scene_node_create_child_scene_node" #.(swig-lispify "scene_node_create_child_scene_node" 'function)) :pointer
+  (scene_node_handle :pointer)
+  (vx :float)
+  (vy :float)
+  (vz :float)
+  (w :float)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "scene_node_create_child_scene_node" 'function))
+
+(cffi:defcfun ("scene_node_set_auto_tracking" #.(swig-lispify "scene_node_set_auto_tracking" 'function)) :void
+  (scene_node_handle :pointer)
+  (enabled :int)
+  (target_handle :pointer))
+
+(cl:export '#.(swig-lispify "scene_node_set_auto_tracking" 'function))
+
+(cffi:defcfun ("terrain_get_layer_blend_map_size" #.(swig-lispify "terrain_get_layer_blend_map_size" 'function)) :int
+  (terrain_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_get_layer_blend_map_size" 'function))
+
+(cffi:defcfun ("terrain_get_layer_blend_map" #.(swig-lispify "terrain_get_layer_blend_map" 'function)) :pointer
+  (terrain_handle :pointer)
+  (layer_index :int))
+
+(cl:export '#.(swig-lispify "terrain_get_layer_blend_map" 'function))
+
+(cffi:defcfun ("terrain_get_height_at_terrain_position" #.(swig-lispify "terrain_get_height_at_terrain_position" 'function)) :float
+  (terrain_handle :pointer)
+  (x :float)
+  (y :float))
+
+(cl:export '#.(swig-lispify "terrain_get_height_at_terrain_position" 'function))
+
+(cffi:defcfun ("create_terrain_global_options" #.(swig-lispify "create_terrain_global_options" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "create_terrain_global_options" 'function))
+
+(cffi:defcfun ("terrain_global_options" #.(swig-lispify "terrain_global_options" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "terrain_global_options" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_max_pixel_error" #.(swig-lispify "terrain_global_options_set_max_pixel_error" 'function)) :void
+  (pixerr :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_max_pixel_error" 'function))
+
+(cffi:defcfun ("terrain_global_options_get_skirt_size" #.(swig-lispify "terrain_global_options_get_skirt_size" 'function)) :float)
+
+(cl:export '#.(swig-lispify "terrain_global_options_get_skirt_size" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_skirt_size" #.(swig-lispify "terrain_global_options_set_skirt_size" 'function)) :void
+  (skirt_size :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_skirt_size" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_light_map_direction" #.(swig-lispify "terrain_global_options_set_light_map_direction" 'function)) :void
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_light_map_direction" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_light_map_direction_vector3" #.(swig-lispify "terrain_global_options_set_light_map_direction_vector3" 'function)) :void
+  (vector #.(swig-lispify "coiVector3" 'classname)))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_light_map_direction_vector3" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_ambient_rgba" #.(swig-lispify "terrain_global_options_set_composite_map_ambient_rgba" 'function)) :void
+  (r :float)
+  (g :float)
+  (b :float)
+  (a :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_ambient_rgba" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_ambient_rgb" #.(swig-lispify "terrain_global_options_set_composite_map_ambient_rgb" 'function)) :void
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_ambient_rgb" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_ambient_colour" #.(swig-lispify "terrain_global_options_set_composite_map_ambient_colour" 'function)) :void
+  (colour #.(swig-lispify "coiColourValue" 'classname)))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_ambient_colour" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_diffuse_rgba" #.(swig-lispify "terrain_global_options_set_composite_map_diffuse_rgba" 'function)) :void
+  (r :float)
+  (g :float)
+  (b :float)
+  (a :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_diffuse_rgba" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_diffuse_rgb" #.(swig-lispify "terrain_global_options_set_composite_map_diffuse_rgb" 'function)) :void
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_diffuse_rgb" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_diffuse_colour" #.(swig-lispify "terrain_global_options_set_composite_map_diffuse_colour" 'function)) :void
+  (colour #.(swig-lispify "coiColourValue" 'classname)))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_diffuse_colour" 'function))
+
+(cffi:defcfun ("terrain_global_options_set_composite_map_distance" #.(swig-lispify "terrain_global_options_set_composite_map_distance" 'function)) :void
+  (c :float))
+
+(cl:export '#.(swig-lispify "terrain_global_options_set_composite_map_distance" 'function))
+
+(cffi:defcfun ("create_terrain_group" #.(swig-lispify "create_terrain_group" 'function)) :pointer
+  (scene_manager :pointer)
+  (terrain_alignment :int)
+  (terrain_size :int)
+  (terrain_world_size :float))
+
+(cl:export '#.(swig-lispify "create_terrain_group" 'function))
+
+(cffi:defcfun ("terrain_group_set_filename_convention" #.(swig-lispify "terrain_group_set_filename_convention" 'function)) :void
+  (terrain_group_handle :pointer)
+  (prefix :string)
+  (extension :string))
+
+(cl:export '#.(swig-lispify "terrain_group_set_filename_convention" 'function))
+
+(cffi:defcfun ("terrain_group_set_origin" #.(swig-lispify "terrain_group_set_origin" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :float)
+  (y :float)
+  (z :float))
+
+(cl:export '#.(swig-lispify "terrain_group_set_origin" 'function))
+
+(cffi:defcfun ("terrain_group_load_all_terrains" #.(swig-lispify "terrain_group_load_all_terrains" 'function)) :void
+  (terrain_group_handle :pointer)
+  (synchronous :int))
+
+(cl:export '#.(swig-lispify "terrain_group_load_all_terrains" 'function))
+
+(cffi:defcfun ("terrain_group_load_terrain" #.(swig-lispify "terrain_group_load_terrain" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long)
+  (synchronous :int))
+
+(cl:export '#.(swig-lispify "terrain_group_load_terrain" 'function))
+
+(cffi:defcfun ("terrain_group_unload_terrain" #.(swig-lispify "terrain_group_unload_terrain" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long))
+
+(cl:export '#.(swig-lispify "terrain_group_unload_terrain" 'function))
+
+(cffi:defcfun ("terrain_group_remove_terrain" #.(swig-lispify "terrain_group_remove_terrain" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long))
+
+(cl:export '#.(swig-lispify "terrain_group_remove_terrain" 'function))
+
+(cffi:defcfun ("terrain_group_free_temporary_resources" #.(swig-lispify "terrain_group_free_temporary_resources" 'function)) :void
+  (terrain_group_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_group_free_temporary_resources" 'function))
+
+(cffi:defcfun ("terrain_group_generate_filename" #.(swig-lispify "terrain_group_generate_filename" 'function)) :string
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long))
+
+(cl:export '#.(swig-lispify "terrain_group_generate_filename" 'function))
+
+(cffi:defcfun ("terrain_group_get_resource_group" #.(swig-lispify "terrain_group_get_resource_group" 'function)) :string
+  (terrain_group_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_group_get_resource_group" 'function))
+
+(cffi:defcfun ("terrain_group_define_terrain" #.(swig-lispify "terrain_group_define_terrain" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long))
+
+(cl:export '#.(swig-lispify "terrain_group_define_terrain" 'function))
+
+(cffi:defcfun ("terrain_group_define_terrain_height" #.(swig-lispify "terrain_group_define_terrain_height" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long)
+  (height :float))
+
+(cl:export '#.(swig-lispify "terrain_group_define_terrain_height" 'function))
+
+(cffi:defcfun ("terrain_group_define_terrain_image" #.(swig-lispify "terrain_group_define_terrain_image" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long)
+  (image_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_group_define_terrain_image" 'function))
+
+(cffi:defcfun ("terrain_group_define_terrain_filename" #.(swig-lispify "terrain_group_define_terrain_filename" 'function)) :void
+  (terrain_group_handle :pointer)
+  (x :long)
+  (y :long)
+  (filename :string))
+
+(cl:export '#.(swig-lispify "terrain_group_define_terrain_filename" 'function))
+
+(cffi:defcfun ("terrain_group_get_default_import_settings" #.(swig-lispify "terrain_group_get_default_import_settings" 'function)) :pointer
+  (terrain_group_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_group_get_default_import_settings" 'function))
+
+(cffi:defcfun ("terrain_group_get_terrain_iterator" #.(swig-lispify "terrain_group_get_terrain_iterator" 'function)) :pointer
+  (terrain_group_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_group_get_terrain_iterator" 'function))
+
+(cffi:defcfun ("terrain_iterator_has_more_elements" #.(swig-lispify "terrain_iterator_has_more_elements" 'function)) :int
+  (terrain_iterator_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_iterator_has_more_elements" 'function))
+
+(cffi:defcfun ("terrain_iterator_get_next" #.(swig-lispify "terrain_iterator_get_next" 'function)) :pointer
+  (terrain_iterator_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_iterator_get_next" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_terrain_size" #.(swig-lispify "terrain_group_import_data_set_terrain_size" 'function)) :void
+  (import_data_handle :pointer)
+  (size :int))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_terrain_size" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_world_size" #.(swig-lispify "terrain_group_import_data_set_world_size" 'function)) :void
+  (import_data_handle :pointer)
+  (size :float))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_world_size" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_input_scale" #.(swig-lispify "terrain_group_import_data_set_input_scale" 'function)) :void
+  (import_data_handle :pointer)
+  (scale :float))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_input_scale" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_min_batch_size" #.(swig-lispify "terrain_group_import_data_set_min_batch_size" 'function)) :void
+  (import_data_handle :pointer)
+  (size :int))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_min_batch_size" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_max_batch_size" #.(swig-lispify "terrain_group_import_data_set_max_batch_size" 'function)) :void
+  (import_data_handle :pointer)
+  (size :int))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_max_batch_size" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_resize_layers" #.(swig-lispify "terrain_group_import_data_resize_layers" 'function)) :void
+  (import_data_handle :pointer)
+  (size :int))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_resize_layers" 'function))
+
+(cffi:defcfun ("terrain_group_import_data_set_layer" #.(swig-lispify "terrain_group_import_data_set_layer" 'function)) :void
+  (import_data_handle :pointer)
+  (layer_index :int)
+  (world_size :int)
+  (texture1 :string)
+  (texture2 :string))
+
+(cl:export '#.(swig-lispify "terrain_group_import_data_set_layer" 'function))
+
+(cffi:defcfun ("terrain_layer_blend_map_get_blend_pointer" #.(swig-lispify "terrain_layer_blend_map_get_blend_pointer" 'function)) :pointer
+  (terrain_layer_blend_map_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_layer_blend_map_get_blend_pointer" 'function))
+
+(cffi:defcfun ("terrain_layer_blend_map_convert_image_to_terrain_space" #.(swig-lispify "terrain_layer_blend_map_convert_image_to_terrain_space" 'function)) :void
+  (terrain_layer_blend_map_handle :pointer)
+  (x :int)
+  (y :int)
+  (out_x :pointer)
+  (out_y :pointer))
+
+(cl:export '#.(swig-lispify "terrain_layer_blend_map_convert_image_to_terrain_space" 'function))
+
+(cffi:defcfun ("terrain_layer_blend_map_dirty" #.(swig-lispify "terrain_layer_blend_map_dirty" 'function)) :void
+  (terrain_layer_blend_map_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_layer_blend_map_dirty" 'function))
+
+(cffi:defcfun ("terrain_layer_blend_map_update" #.(swig-lispify "terrain_layer_blend_map_update" 'function)) :void
+  (terrain_layer_blend_map_handle :pointer))
+
+(cl:export '#.(swig-lispify "terrain_layer_blend_map_update" 'function))
+
+(cffi:defcfun ("add_viewport" #.(swig-lispify "add_viewport" 'function)) :pointer
+  (camera_handle :pointer))
+
+(cl:export '#.(swig-lispify "add_viewport" 'function))
+
+(cffi:defcfun ("viewport_set_background_colour" #.(swig-lispify "viewport_set_background_colour" 'function)) :void
+  (viewport_handle :pointer)
+  (r :float)
+  (g :float)
+  (b :float))
+
+(cl:export '#.(swig-lispify "viewport_set_background_colour" 'function))
+
+(cffi:defcfun ("viewport_get_width" #.(swig-lispify "viewport_get_width" 'function)) :float
+  (viewport_handle :pointer))
+
+(cl:export '#.(swig-lispify "viewport_get_width" 'function))
+
+(cffi:defcfun ("viewport_get_height" #.(swig-lispify "viewport_get_height" 'function)) :float
+  (viewport_handle :pointer))
+
+(cl:export '#.(swig-lispify "viewport_get_height" 'function))
+
+(cffi:defcfun ("add_window_listener" #.(swig-lispify "add_window_listener" 'function)) :void
+  (render_window_handle :pointer)
+  (window_event :pointer))
+
+(cl:export '#.(swig-lispify "add_window_listener" 'function))
+
+(cffi:defcfun ("remove_window_listener" #.(swig-lispify "remove_window_listener" 'function)) :void
+  (render_window_handle :pointer))
+
+(cl:export '#.(swig-lispify "remove_window_listener" 'function))
 
 (cffi:defcenum #.(swig-lispify "KeyCode" 'enumname)
 	(#.(swig-lispify "KC_UNASSIGNED" 'enumvalue :keyword) #.#x00)
@@ -1046,9 +1636,15 @@
 (cffi:defcstruct #.(swig-lispify "MouseState" 'classname)
 	(#.(swig-lispify "width" 'slotname) :int)
 	(#.(swig-lispify "height" 'slotname) :int)
-	(#.(swig-lispify "X" 'slotname) #.(swig-lispify "Axis" 'classname))
-	(#.(swig-lispify "Y" 'slotname) #.(swig-lispify "Axis" 'classname))
-	(#.(swig-lispify "Z" 'slotname) #.(swig-lispify "Axis" 'classname))
+	(#.(swig-lispify "x_abs" 'slotname) :int)
+	(#.(swig-lispify "x_rel" 'slotname) :int)
+	(#.(swig-lispify "x_abs_only" 'slotname) :int)
+	(#.(swig-lispify "y_abs" 'slotname) :int)
+	(#.(swig-lispify "y_rel" 'slotname) :int)
+	(#.(swig-lispify "y_abs_only" 'slotname) :int)
+	(#.(swig-lispify "z_abs" 'slotname) :int)
+	(#.(swig-lispify "z_rel" 'slotname) :int)
+	(#.(swig-lispify "z_abs_only" 'slotname) :int)
 	(#.(swig-lispify "buttons" 'slotname) :int))
 
 (cl:export '#.(swig-lispify "MouseState" 'classname))
@@ -1057,39 +1653,56 @@
 
 (cl:export '#.(swig-lispify "height" 'slotname))
 
-(cl:export '#.(swig-lispify "X" 'slotname))
+(cl:export '#.(swig-lispify "x_abs" 'slotname))
 
-(cl:export '#.(swig-lispify "Y" 'slotname))
+(cl:export '#.(swig-lispify "x_rel" 'slotname))
 
-(cl:export '#.(swig-lispify "Z" 'slotname))
+(cl:export '#.(swig-lispify "x_abs_only" 'slotname))
+
+(cl:export '#.(swig-lispify "y_abs" 'slotname))
+
+(cl:export '#.(swig-lispify "y_rel" 'slotname))
+
+(cl:export '#.(swig-lispify "y_abs_only" 'slotname))
+
+(cl:export '#.(swig-lispify "z_abs" 'slotname))
+
+(cl:export '#.(swig-lispify "z_rel" 'slotname))
+
+(cl:export '#.(swig-lispify "z_abs_only" 'slotname))
 
 (cl:export '#.(swig-lispify "buttons" 'slotname))
 
-(cffi:defcfun ("create_input_system" #.(swig-lispify "create_input_system" 'function)) :void
+(cffi:defcfun ("create_input_system" #.(swig-lispify "create_input_system" 'function)) :pointer
   (window_handle :unsigned-int))
 
 (cl:export '#.(swig-lispify "create_input_system" 'function))
 
-(cffi:defcfun ("destroy_input_system" #.(swig-lispify "destroy_input_system" 'function)) :void)
+(cffi:defcfun ("destroy_input_system" #.(swig-lispify "destroy_input_system" 'function)) :void
+  (input_manager_handle :pointer))
 
 (cl:export '#.(swig-lispify "destroy_input_system" 'function))
 
 (cffi:defcfun ("create_mouse_object" #.(swig-lispify "create_mouse_object" 'function)) :pointer
+  (input_manager_handle :pointer)
   (buffered :int))
 
 (cl:export '#.(swig-lispify "create_mouse_object" 'function))
 
 (cffi:defcfun ("create_keyboard_object" #.(swig-lispify "create_keyboard_object" 'function)) :pointer
+  (input_manager_handle :pointer)
   (buffered :int))
 
 (cl:export '#.(swig-lispify "create_keyboard_object" 'function))
 
 (cffi:defcfun ("destroy_mouse_object" #.(swig-lispify "destroy_mouse_object" 'function)) :void
+  (input_manager_handle :pointer)
   (mouse_handle :pointer))
 
 (cl:export '#.(swig-lispify "destroy_mouse_object" 'function))
 
 (cffi:defcfun ("destroy_keyboard_object" #.(swig-lispify "destroy_keyboard_object" 'function)) :void
+  (input_manager_handle :pointer)
   (keyboard_handle :pointer))
 
 (cl:export '#.(swig-lispify "destroy_keyboard_object" 'function))
@@ -1132,5 +1745,106 @@
   (mouse_handle :pointer))
 
 (cl:export '#.(swig-lispify "mouse_capture" 'function))
+
+(cffi:defcfun ("create_input_listener" #.(swig-lispify "create_input_listener" 'function)) :pointer)
+
+(cl:export '#.(swig-lispify "create_input_listener" 'function))
+
+(cffi:defcfun ("attach_keyboard_listener" #.(swig-lispify "attach_keyboard_listener" 'function)) :void
+  (keyboard_handle :pointer)
+  (input_listener_handle :pointer))
+
+(cl:export '#.(swig-lispify "attach_keyboard_listener" 'function))
+
+(cffi:defcfun ("attach_mouse_listener" #.(swig-lispify "attach_mouse_listener" 'function)) :void
+  (mouse_handle :pointer)
+  (input_listener_handle :pointer))
+
+(cl:export '#.(swig-lispify "attach_mouse_listener" 'function))
+
+(cffi:defcfun ("add_key_pressed_listener" #.(swig-lispify "add_key_pressed_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "add_key_pressed_listener" 'function))
+
+(cffi:defcfun ("add_key_released_listener" #.(swig-lispify "add_key_released_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "add_key_released_listener" 'function))
+
+(cffi:defcfun ("add_mouse_pressed_listener" #.(swig-lispify "add_mouse_pressed_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "add_mouse_pressed_listener" 'function))
+
+(cffi:defcfun ("add_mouse_released_listener" #.(swig-lispify "add_mouse_released_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "add_mouse_released_listener" 'function))
+
+(cffi:defcfun ("add_mouse_moved_listener" #.(swig-lispify "add_mouse_moved_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "add_mouse_moved_listener" 'function))
+
+(cffi:defcfun ("remove_key_pressed_listener" #.(swig-lispify "remove_key_pressed_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "remove_key_pressed_listener" 'function))
+
+(cffi:defcfun ("remove_key_released_listener" #.(swig-lispify "remove_key_released_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "remove_key_released_listener" 'function))
+
+(cffi:defcfun ("remove_mouse_pressed_listener" #.(swig-lispify "remove_mouse_pressed_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "remove_mouse_pressed_listener" 'function))
+
+(cffi:defcfun ("remove_mouse_released_listener" #.(swig-lispify "remove_mouse_released_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "remove_mouse_released_listener" 'function))
+
+(cffi:defcfun ("remove_mouse_moved_listener" #.(swig-lispify "remove_mouse_moved_listener" 'function)) :void
+  (input_listener_handle :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "remove_mouse_moved_listener" 'function))
+
+(cffi:defcfun ("default_key_mappings" #.(swig-lispify "default_key_mappings" 'function)) :void)
+
+(cl:export '#.(swig-lispify "default_key_mappings" 'function))
+
+(cffi:defcfun ("add_key_map" #.(swig-lispify "add_key_map" 'function)) :void
+  (key :string)
+  (key_code :int))
+
+(cl:export '#.(swig-lispify "add_key_map" 'function))
+
+(cffi:defcfun ("remove_key_map" #.(swig-lispify "remove_key_map" 'function)) :void
+  (key :string))
+
+(cl:export '#.(swig-lispify "remove_key_map" 'function))
+
+(cffi:defcfun ("key_translate" #.(swig-lispify "key_translate" 'function)) :int
+  (key_code :string))
+
+(cl:export '#.(swig-lispify "key_translate" 'function))
+
+(cffi:defcfun ("key_code_translate" #.(swig-lispify "key_code_translate" 'function)) :string
+  (key :int))
+
+(cl:export '#.(swig-lispify "key_code_translate" 'function))
 
 

@@ -23,6 +23,30 @@ __inline__ coiColourValue ogre_colour_to_llcoi_colour(const Ogre::ColourValue& c
   return coicolour;
 }
 
+// ogre to llcoi with pointer output
+__inline__ void ogre_vector3_to_llcoi_vector3_output(const Ogre::Vector3& vector, coiVector3* output)
+{
+  output->x = vector.x;
+  output->y = vector.y;
+  output->z = vector.z;
+}
+
+__inline__ void ogre_quaternion_to_llcoi_quaternion_output(const Ogre::Quaternion& quat, coiQuaternion* output)
+{
+  output->w = quat.w;
+  output->x = quat.x;
+  output->y = quat.y;
+  output->z = quat.z;
+}
+
+__inline__ void ogre_colour_to_llcoi_colour_output(const Ogre::ColourValue& colour, coiColourValue* output)
+{
+  output->r = colour.r;
+  output->g = colour.g;
+  output->b = colour.b;
+  output->a = colour.a;
+}
+
 // llcoi to ogre
 __inline__ Ogre::Vector3 llcoi_vector3_to_ogre_vector3(const coiVector3& vector)
 {

@@ -57,6 +57,8 @@ DLL void scene_node_set_direction(CoiHandle scene_node_handle, float x, float y,
 
 DLL void scene_node_set_orientation(CoiHandle scene_node_handle, float w, float x, float y, float z);
 
+DLL void scene_node_get_orientation(CoiHandle scene_node_handle, CoiHandle quaternion_output_handle);
+
 DLL void scene_node_set_position(CoiHandle scene_node_handle, float x, float y, float z);
 
 DLL void scene_node_yaw(CoiHandle scene_node_handle, float radians);
@@ -70,3 +72,11 @@ DLL void scene_node_translate(CoiHandle scene_node_handle, float x, float y, flo
 DLL void scene_node_roll(CoiHandle scene_node_handle, float radians);
 
 DLL void scene_node_pitch(CoiHandle scene_node_handle, float radians);
+
+DLL void scene_node_remove_child(CoiHandle scene_node_handle, CoiHandle child_handle);
+
+DLL void scene_node_add_child(CoiHandle scene_node_handle, CoiHandle child_handle);
+
+DLL CoiHandle scene_node_create_child_scene_node(CoiHandle scene_node_handle, float vx, float vy, float vz, float w, float x, float y, float z);
+
+DLL void scene_node_set_auto_tracking(CoiHandle scene_node_handle, int enabled, CoiHandle target_handle);

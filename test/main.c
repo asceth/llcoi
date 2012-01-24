@@ -24,9 +24,24 @@
 #endif
 
 CoiHandle myCamera;
+CoiHandle input_manager;
+CoiHandle input_listener;
 CoiHandle keyboard;
 CoiHandle mouse;
 float tiny_timer=0;
+int keep_going = 0;
+
+int key_pressed_test(int key, unsigned int text)
+{
+  char tmp[255];
+  sprintf(tmp, "KEY: %s", key_code_translate(key));
+  log_message(tmp);
+
+  if (key == KC_ESCAPE)
+    {
+      keep_going = 0;
+    }
+}
 
 void window_event_listener_test(CoiHandle window_handle)
 {
@@ -83,7 +98,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
 #endif
 #endif //LLCOI_TEST_USE_OPENINPUT
 
-  int keep_going = 1;
+  keep_going = 1;
   long loop_x = 0;
   long loop_y = 0;
 
@@ -206,6 +221,7 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
   terrain_group_load_all_terrains(terrain_group, 1);
 
   // blend maps
+  /*
   terrain_iterator = terrain_group_get_terrain_iterator(terrain_group);
   while(terrain_iterator_has_more_elements(terrain_iterator))
     {
@@ -220,7 +236,6 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
       float min_height_1 = 70;
       float fade_dist_1 = 15;
 
-      /*
       float* blend_1 = terrain_layer_blend_map_get_blend_pointer(blend_map_1);
 
       for(unsigned int y = 0; y < blend_map_size; ++y)
@@ -243,8 +258,8 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
       terrain_layer_blend_map_dirty(blend_map_1);
       terrain_layer_blend_map_update(blend_map_0);
       terrain_layer_blend_map_update(blend_map_1);
-      */
     }
+  */
 
   terrain_group_free_temporary_resources(terrain_group);
   // listeners
@@ -253,17 +268,20 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
 
 	add_window_listener(renderwindow, window_event_listener_test);
 
-  create_input_system(render_window_get_hwnd(renderwindow));
-  keyboard = create_keyboard_object(0);
-  mouse = create_mouse_object(0);
+  input_manager = create_input_system(render_window_get_hwnd(renderwindow));
+  input_listener = create_input_listener();
+
+  keyboard = create_keyboard_object(input_manager, 1);
+  mouse = create_mouse_object(input_manager, 1);
+
+  attach_keyboard_listener(keyboard, input_listener);
+  attach_mouse_listener(mouse, input_listener);
+  add_key_pressed_listener(input_listener, key_pressed_test);
 
   while(keep_going)
     {
       keyboard_capture(keyboard);
       mouse_capture(mouse);
-
-      if(keyboard_is_key_down(keyboard, KC_ESCAPE))
-        keep_going = 0;
 
       // Pump window messages for nice behaviour
       pump_messages();
@@ -332,9 +350,9 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR strCmdLine, INT 
 
 	remove_window_listener(renderwindow);
 
-  destroy_keyboard_object(keyboard);
-  destroy_mouse_object(mouse);
-  destroy_input_system();
+  destroy_keyboard_object(input_manager, keyboard);
+  destroy_mouse_object(input_manager, mouse);
+  destroy_input_system(input_manager);
   release_engine();
 
   return 0;

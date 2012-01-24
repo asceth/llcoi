@@ -25,4 +25,5 @@ DLL void scene_manager_set_shadow_technique(CoiHandle scene_manager_handle, cons
 
 DLL void scene_manager_get_shadow_technique(CoiHandle scene_manager_handle, const int technique);
 
+DLL CoiHandle scene_manager_get_root_scene_node(CoiHandle scene_manager_handle);
 

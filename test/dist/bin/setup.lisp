@@ -2,6 +2,7 @@
 (push *cfgpath* asdf:*central-registry*)
 (require 'ogre)
 
+(defparamater *input* nil)
 (defparameter *windowhandle* nil)
 (defparameter *camerahandle* nil)
 (defparameter *viewporthandle* nil)
@@ -26,11 +27,12 @@
 
 (ogre:set-default-num-mipmaps 5)
 
-(ogre:initialise-all-resourcegroups)
+(ogre:initialise-all-resource-groups)
 
-(ogre:create-scene-manager "OctreeSceneManager" "scenemanager")
+(ogre:create-scene-manager (ogre:get-scene-manager) "OctreeSceneManager" "scenemanager")
 
-(setq *camerahandle* (ogre:create-camera "myCam"))
+
+(setq *camerahandle* (ogre:create-camera (ogre:get-scene-manager) "myCam"))
 
 (ogre:camera-set-position *camerahandle* 0.0 0.0 500.0)
 
@@ -44,7 +46,7 @@
 
 (ogre:camera-set-aspect-ratio *camerahandle* 800.0 600.0)
 
-(ogre:set-ambient-light-rgb 0.5 0.5 0.5)
+(ogre:scene-manager-set-ambient-light-rgb (ogre:get-scene-manager) 0.5 0.5 0.5)
 
 (setq *lighthandle* (ogre:create-light "mainLight"))
 
@@ -54,7 +56,7 @@
 
 (setq *windowhwnd* (ogre:render-window-get-hwnd *windowhandle*))
 
-(ogre:create-input-system *windowhwnd*);
+(setq *input* (ogre:create-input-system *windowhwnd*))
 
 (setq *keyboard* (ogre:create-keyboard-object 0))
 

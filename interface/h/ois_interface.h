@@ -1,6 +1,4 @@
-/******************************************************************************
- * ois_interface.h - main OIS include file for C clients
- ******************************************************************************/
+// ois_interface.h - main OIS include file for C clients
 
 #pragma once
 
@@ -186,28 +184,42 @@ typedef struct
 
 typedef struct
 {
-    int width, height;
-    //! X Axis component
-    Axis X;
-    //! Y Axis Component
-    Axis Y;
-    //! Z Axis Component
-    Axis Z;
-    int buttons;
+  int width, height;
+
+  //! X Axis component
+  int x_abs, x_rel, x_abs_only;
+  //! Y Axis Component
+  int y_abs, y_rel, y_abs_only;
+  //! Z Axis Component
+  int z_abs, z_rel, z_abs_only;
+
+  int buttons;
 } MouseState;
 
+typedef int(*KeyListenerEvent)(int, unsigned int);
+typedef int(*MouseListenerEvent)(int, int, // width, height
+                                 int, int, int, // x - rel, abs, abs_only
+                                 int, int, int, // y - rel, abs, abs_only
+                                 int, int, int, // z - rel, abs, abs_only
+                                 int, // buttons
+                                 int); // button
+typedef int(*MouseMovedListenerEvent)(int, int,
+                                      int, int, int,
+                                      int, int, int,
+                                      int, int, int,
+                                      int);
 
-DLL void create_input_system(unsigned int window_handle);
+DLL CoiHandle create_input_system(unsigned int window_handle);
 
-DLL void destroy_input_system();
+DLL void destroy_input_system(CoiHandle input_manager_handle);
 
-DLL CoiHandle create_mouse_object(int buffered);
+DLL CoiHandle create_mouse_object(CoiHandle input_manager_handle, int buffered);
 
-DLL CoiHandle create_keyboard_object(int buffered);
+DLL CoiHandle create_keyboard_object(CoiHandle input_manager_handle, int buffered);
 
-DLL void destroy_mouse_object(CoiHandle mouse_handle);
+DLL void destroy_mouse_object(CoiHandle input_manager_handle, CoiHandle mouse_handle);
 
-DLL void destroy_keyboard_object(CoiHandle keyboard_handle);
+DLL void destroy_keyboard_object(CoiHandle input_manager_handle, CoiHandle keyboard_handle);
 
 DLL int keyboard_is_key_down(CoiHandle keyboard_handle, enum KeyCode key_code);
 
@@ -222,3 +234,40 @@ DLL void keyboard_set_buffered(CoiHandle keyboard_handle, int buffered);
 DLL void keyboard_capture(CoiHandle keyboard_handle);
 
 DLL void mouse_capture(CoiHandle mouse_handle);
+
+DLL CoiHandle create_input_listener();
+
+DLL void attach_keyboard_listener(CoiHandle keyboard_handle, CoiHandle input_listener_handle);
+
+DLL void attach_mouse_listener(CoiHandle mouse_handle, CoiHandle input_listener_handle);
+
+DLL void add_key_pressed_listener(CoiHandle input_listener_handle, KeyListenerEvent event);
+
+DLL void add_key_released_listener(CoiHandle input_listener_handle, KeyListenerEvent event);
+
+DLL void add_mouse_pressed_listener(CoiHandle input_listener_handle, MouseListenerEvent event);
+
+DLL void add_mouse_released_listener(CoiHandle input_listener_handle, MouseListenerEvent event);
+
+DLL void add_mouse_moved_listener(CoiHandle input_listener_handle, MouseMovedListenerEvent event);
+
+DLL void remove_key_pressed_listener(CoiHandle input_listener_handle, KeyListenerEvent event);
+
+DLL void remove_key_released_listener(CoiHandle input_listener_handle, KeyListenerEvent event);
+
+DLL void remove_mouse_pressed_listener(CoiHandle input_listener_handle, MouseListenerEvent event);
+
+DLL void remove_mouse_released_listener(CoiHandle input_listener_handle, MouseListenerEvent event);
+
+DLL void remove_mouse_moved_listener(CoiHandle input_listener_handle, MouseMovedListenerEvent event);
+
+DLL void default_key_mappings();
+
+DLL void add_key_map(const char* key, int key_code);
+
+DLL void remove_key_map(const char* key);
+
+DLL int key_translate(const char* key_code);
+
+DLL const char* key_code_translate(int key);
+

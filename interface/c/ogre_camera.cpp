@@ -1,6 +1,4 @@
-/******************************************************************************
- * Ogre::Camera bindings
- ******************************************************************************/
+// Ogre::Camera bindings
 
 #include "ogre_prerequisites.h"
 #include "ogre_camera.h"
@@ -75,6 +73,13 @@ void camera_set_position(CoiHandle camera_handle, const float x, const float y, 
     camera->setPosition(Ogre::Vector3(x, y, z));
 }
 
+// Ogre::Camera::setOrientation(Ogre::Quaternion const&)
+void camera_set_orientation(CoiHandle camera_handle, const float w, const float x, const float y, const float z)
+{
+  HANDLE(Ogre::Camera*, camera);
+  camera->setOrientation(Ogre::Quaternion(w, x, y, z));
+}
+
 // Ogre::Camera::lookAt(Ogre::Vector3 const&)
 // Ogre::Camera::lookAt(float, float, float)
 void camera_lookat(CoiHandle camera_handle, const float x, const float y, const float z)
@@ -107,7 +112,6 @@ Ogre::Camera::rotate(Ogre::Vector3 const&, Ogre::Radian const&)
 Ogre::Camera::rotate(Ogre::Quaternion const&)
 Ogre::Camera::setFixedYawAxis(bool, Ogre::Vector3 const&)
 Ogre::Camera::getOrientation() const
-Ogre::Camera::setOrientation(Ogre::Quaternion const&)
 Ogre::Camera::_renderScene(Ogre::Viewport*, bool)
 Ogre::Camera::_notifyRenderedFaces(unsigned int)
 Ogre::Camera::_notifyRenderedBatches(unsigned int)

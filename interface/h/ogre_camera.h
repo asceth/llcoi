@@ -1,6 +1,4 @@
-/******************************************************************************
- * Ogre::Camera interface definition
- ******************************************************************************/
+// Ogre::Camera interface definition
 
 #pragma once
 
@@ -23,5 +21,7 @@ DLL void camera_set_frustum_offset(CoiHandle camera_handle, const int offset_x, 
 DLL void camera_set_focal_length(CoiHandle camera_handle, float fl);
 
 DLL void camera_set_position(CoiHandle camera_handle, const float x, const float y, const float z);
+
+DLL void camera_set_orientation(CoiHandle camera_handle, const float x, const float y, const float z, const float w);
 
 DLL void camera_lookat(CoiHandle camera_handle, const float x, const float y, const float z);

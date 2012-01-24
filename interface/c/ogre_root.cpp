@@ -178,7 +178,7 @@ void pump_messages()
 int render_loop_once()
 {
   // Pump window messages for nice behaviour
-  Ogre::WindowEventUtilities::messagePump();
+  pump_messages();
 
   // Render a frame
   if(!Ogre::Root::getSingletonPtr()->renderOneFrame())
